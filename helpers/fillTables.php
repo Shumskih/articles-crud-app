@@ -2,39 +2,35 @@
 
 require 'autoload.php';
 
-function faker(PDO $pdo) {
-    $tables = tablesList($pdo);
+function faker(PDO $pdo, array $tables, array $relations) {
     $count = count($tables);
 
     if ($count > 0) {
-        for ($i = $count - 1; $i >= 0; $i--) {
-            dropTable($pdo, $tables[$i]);
+        foreach ($tables as $table => $columns) {
+            if (substr_count($table, '_') > 0) {
+                dropTable($pdo, $table);
+            }
         }
+
+        foreach ($tables as $table => $columns) {
+            dropTable($pdo, $table);
+        }
+    } else {
+        echo 'В createTablesData.php нет таблиц!';
     }
 
-    // Populate articles by fake data
-    $columns = 'id         int auto_increment primary key not null,
-                title      varchar(200)                   not null,
-                short_desc varchar(500)                   not null,
-                body       text                           not null,
-                datetime   datetime                       not null,
-                changed    datetime';
-    createTable($pdo, 'articles', $columns);
-    populateArticles($pdo);
+    foreach ($tables as $table => $columns) {
+        createTable($pdo, $table, $columns);
 
-    // Populate categories by fake data
-    $columns = 'id   int auto_increment primary key not null,
-                name varchar(500)';
-    createTable($pdo, 'categories', $columns);
-    populateCategories($pdo);
+        if ($table == 'articles')
+            populateArticles($pdo);
 
-    // Add each article to category
-    $columns = 'category_id int,
-                article_id  int,
-                foreign key (category_id) references categories (id),
-                foreign key (article_id) references articles (id)';
-    createTable($pdo, 'categories_articles', $columns);
-    populateArticlesCategories($pdo);
+        if ($table == 'categories')
+            populateCategories($pdo);
+
+        if ($table == 'categories_articles')
+            populateCategoriesArticles($pdo, $relations);
+    }
 }
 
 function populateArticles(PDO $pdo) {
@@ -76,35 +72,18 @@ function populateCategories(PDO $pdo) {
     }
 }
 
-function populateArticlesCategories(PDO $pdo) {
-    $queryArticles = 'SELECT id FROM articles';
-    $queryCategories = 'SELECT id FROM categories';
-
-    $articlesIds = $pdo->query($queryArticles);
-    $categoriesIds = $pdo->query($queryCategories);
-
-    $articlesIdsArray = [];
-    $categoriesIdsArray = [];
-
-    while ($a = $articlesIds->fetch()) {
-        array_push($articlesIdsArray, $a);
-    }
-
-    while ($c = $categoriesIds->fetch()) {
-        array_push($categoriesIdsArray, $c);
-    }
-
-    for ($i = 0; $i < count($categoriesIdsArray) -1; $i++ ) {
-        for ($j = 0; $j < 2; $j++) {
-            echo $categoriesIdsArray[$i] . '<br>';
-            echo $articlesIdsArray[$j] . '<br>';
-            $query = "INSERT INTO categories_articles VALUES ($categoriesIdsArray[$i][0], $articlesIdsArray[$j][0])";
-            $pdo->exec($query);
+function populateCategoriesArticles(PDO $pdo, array $relations)
+{
+    foreach ($relations['categoriesArticlesRelations'] as $category => $relations) {
+        foreach ($relations as $r) {
+            $query = "INSERT INTO categories_articles VALUES ($category, $r)";
+            $pdo->query($query);
         }
     }
 }
 
-function isTableExists(PDO $pdo, string $table) : bool {
+function isTableExists(PDO $pdo, string $table) : bool
+{
     try {
         $result = $pdo->query("SELECT * from $table LIMIT 1");
     } catch (Exception $e) {
@@ -114,7 +93,8 @@ function isTableExists(PDO $pdo, string $table) : bool {
     return $result !== false;
 }
 
-function dropTable(PDO $pdo, string $table) : bool {
+function dropTable(PDO $pdo, string $table) : bool
+{
     try {
         $result = $pdo->query("DROP TABLE $table");
     } catch (PDOException $e) {

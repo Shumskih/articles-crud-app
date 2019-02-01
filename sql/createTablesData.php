@@ -16,3 +16,12 @@ $tables = [
                             foreign key (category_id) references categories (id),
                             foreign key (article_id) references articles (id)',
 ];
+
+$relations = ['categoriesArticlesRelations' => [
+  1 => [1, 2],
+  2 => [3, 4],
+  3 => [5, 6],
+  4 => [7, 8],
+  5 => [9, 10]
+]
+              ];

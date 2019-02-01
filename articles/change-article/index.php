@@ -35,7 +35,7 @@ if (isset($_POST['submit'])) {
             $article = $pdo->prepare($query);
             $article->execute(['id' => $id, 'title' => $title, 'short_desc' => $short_desc, 'body' => $body]);
 
-            header('Location: /');
+            header('Location: /articles?id=' . $id);
         } catch (PDOException $e) {
             echo 'Ошибка изменения статьи<br>' . $e->getMessage();
         }
@@ -44,5 +44,5 @@ if (isset($_POST['submit'])) {
 if (isset($_POST['cancel'])) {
     $id = $_POST['id'];
 
-    header('Location: /articles/?id=' . $id);
+    header('Location: /articles?id=' . $id);
 }

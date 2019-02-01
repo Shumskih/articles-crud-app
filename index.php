@@ -1,9 +1,10 @@
 <?php
 include 'helpers/connectToDB.php';
 include 'helpers/fillTables.php';
+include_once 'sql/createTablesData.php';
 
 //Insert fake data to database
-//faker($pdo);
+//faker($pdo, $tables, $relations);
 
 $headTitle = 'Список статей';
 $articlesArr = [];
@@ -23,3 +24,4 @@ try {
 }
 
 include 'views/articles/index.html.php';
+
