@@ -5,6 +5,7 @@ $tables = [
                  title      varchar(200)                   not null,
                  short_desc varchar(500)                   not null,
                  body       text                           not null,
+                 img        varchar(200)                       null,
                  datetime   datetime                       not null,
                  changed    datetime',
 

@@ -7,7 +7,17 @@
     <div class="container">
         <h1 class="text-center mt-5 mb-5"><?php echo $headTitle ?></h1>
 
-        <form action="<?php $_SERVER['PHP_SELF'] ?>" method="POST">
+        <form action="<?php $_SERVER['PHP_SELF'] ?>" method="POST" enctype="multipart/form-data" class="mb-5">
+            <div class="form-group">
+                <select class="form-control" name="category">
+                    <option>Выбор категории:</option>
+                    <?php while ($category = $categories->fetch()): ?>
+                        <option value="<?php echo $category['id'] ?>">
+                            <?php echo $category['name'] ?>
+                        </option>
+                    <?php endwhile; ?>
+                </select>
+            </div>
             <div class="form-group">
                 <input type="text" name="title" id="title" class="form-control" placeholder="Заголовок статьи" required>
             </div>
@@ -16,6 +26,11 @@
             </div>
             <div class="form-group">
                 <textarea name="body" id="body" rows="10" class="form-control" placeholder="Текст статьи" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputFile">Добавить изображение:</label>
+                <input type="file" name="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+                <small id="fileHelp" class="form-text text-muted">Добавьте изображение. Оно будет отображаться в превью статьи и на странице статьи</small>
             </div>
             <input type="submit" name="submit" value="Отправить" class="btn btn-outline-primary">
         </form>

@@ -20,7 +20,9 @@
     <?php foreach ($articlesArr as $article): ?>
         <div class="card">
             <div class="card-header">
-                <?php echo $article['title']; ?>
+                <a href="/articles?id=<?php echo $article['id'] ?>">
+                    <?php echo $article['title']; ?>
+                </a>
             </div>
             <div class="card-body">
                 <div class="card-text">

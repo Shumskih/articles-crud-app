@@ -25,9 +25,17 @@ if(isset($_GET['id'])) {
 
 if(isset($_POST['delete'])) {
     try {
+        $query = 'DELETE from categories_articles WHERE article_id = :id';
+        $article = $pdo->prepare($query);
+        $article->execute([
+          'id' => $_POST['id']
+        ]);
+
         $query = 'DELETE FROM articles WHERE id = :id';
         $article = $pdo->prepare($query);
-        $article->execute(['id' => $_POST['id']]);
+        $article->execute([
+          'id' => $_POST['id']
+        ]);
 
         header('Location: /');
     } catch (PDOException $e) {

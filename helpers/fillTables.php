@@ -42,18 +42,20 @@ function populateArticles(PDO $pdo) {
         $shortDesc = $faker->sentence($nbWords = 20, $variableNbWords = true);
         $bodyArr = $faker->paragraphs($nb = 5, $asText = false);
         $body = '';
+        $img = '1549124366.jpg';
 
 
         foreach ($bodyArr as $b) {
             $body .= $b . "<br>";
         }
 
-        $query = 'INSERT INTO articles VALUES (null, :title, :short_desc, :body, now(), null)';
+        $query = 'INSERT INTO articles VALUES (null, :title, :short_desc, :body, :img, now(), null)';
         $article = $pdo->prepare($query);
         $article->execute([
           'title' => $articleTitle,
           'short_desc' => $shortDesc,
-          'body' => $body]);
+          'body' => $body,
+          'img' => $img]);
     }
 }
 

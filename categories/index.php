@@ -28,7 +28,7 @@ if(isset($_GET['id'])) {
     $articlesArr = [];
 
     try {
-        $query = "SELECT title, short_desc FROM articles
+        $query = "SELECT articles.id, title, short_desc FROM articles
                   LEFT JOIN categories_articles on articles.id = categories_articles.article_id
                   LEFT JOIN categories on categories_articles.category_id = categories.id
                   WHERE categories.id = $categoryId";
@@ -36,6 +36,7 @@ if(isset($_GET['id'])) {
 
         while($article = $res->fetch()) {
             array_push($articlesArr, [
+              'id' => $article['id'],
               'title' => $article['title'],
               'short_desc' => $article['short_desc']
             ]);
