@@ -4,6 +4,8 @@ include '../helpers/connectToDB.php';
 $headTitle = '';
 $categoriesArr = [];
 
+session_start();
+
 if (!isset($_GET['id'])) {
     $headTitle = 'Категории';
 

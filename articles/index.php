@@ -5,6 +5,8 @@ include '../helpers/monthsInRussian.php';
 $res = [];
 $headTitle = '';
 
+session_start();
+
 if(isset($_GET['id'])) {
     try {
         $query = 'SELECT id, title, body, datetime FROM articles WHERE id = :id';

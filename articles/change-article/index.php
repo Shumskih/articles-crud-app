@@ -1,6 +1,8 @@
 <?php
 include '../../helpers/connectToDB.php';
 
+session_start();
+
 // Select from database article by id
 if (isset($_GET['id'])) {
     $id = $_GET['id'];

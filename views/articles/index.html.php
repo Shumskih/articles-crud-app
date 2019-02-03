@@ -17,7 +17,7 @@
                 <div class="bs-component">
                     <div class="card mb-3">
                         <img style="height: 250px; width: 100%; display: block;"
-                             src="<?php echo "/uploads/images/" . $article['id'] . "/" . $article['img'] ?>"
+                             src="<?php echo $article['img'] ?>"
                              alt="Card image">
                         <div class="card-body">
                             <a href="/articles?id=<?php echo $article['id'] ?>">

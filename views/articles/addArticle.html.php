@@ -9,8 +9,8 @@
 
         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="POST" enctype="multipart/form-data" class="mb-5">
             <div class="form-group">
-                <select class="form-control" name="category">
-                    <option>Выбор категории:</option>
+                <select class="custom-select" name="category">
+                    <option selected="">Выбор категории:</option>
                     <?php while ($category = $categories->fetch()): ?>
                         <option value="<?php echo $category['id'] ?>">
                             <?php echo $category['name'] ?>

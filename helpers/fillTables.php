@@ -2,7 +2,8 @@
 
 require 'autoload.php';
 
-function faker(PDO $pdo, array $tables, array $relations) {
+function faker(PDO $pdo, array $tables, array $relations, array $users, array $roles)
+{
     $count = count($tables);
 
     if ($count > 0) {
@@ -30,10 +31,20 @@ function faker(PDO $pdo, array $tables, array $relations) {
 
         if ($table == 'categories_articles')
             populateCategoriesArticles($pdo, $relations);
+
+        if ($table == 'users')
+            populateUsers($pdo, $users);
+
+        if ($table == 'roles')
+            populateRoles($pdo, $roles);
+
+        if ($table == 'users_roles')
+            populateUsersRoles($pdo, $relations);
     }
 }
 
-function populateArticles(PDO $pdo) {
+function populateArticles(PDO $pdo)
+{
     $faker = Faker\Factory::create();
 
     for ($i = 0; $i < 10; $i++) {
@@ -42,7 +53,7 @@ function populateArticles(PDO $pdo) {
         $shortDesc = $faker->sentence($nbWords = 20, $variableNbWords = true);
         $bodyArr = $faker->paragraphs($nb = 5, $asText = false);
         $body = '';
-        $img = '1549124366.jpg';
+        $img = '/uploads/images/1549124366.jpg';
 
 
         foreach ($bodyArr as $b) {
@@ -59,7 +70,8 @@ function populateArticles(PDO $pdo) {
     }
 }
 
-function populateCategories(PDO $pdo) {
+function populateCategories(PDO $pdo)
+{
     $faker = Faker\Factory::create();
 
     for ($i = 0; $i < 5; $i++) {
@@ -84,6 +96,56 @@ function populateCategoriesArticles(PDO $pdo, array $relations)
     }
 }
 
+function populateUsers(PDO $pdo, array $users)
+{
+    foreach ($users as $user) {
+        $name     = $user['name'];
+        $email    = $user['email'];
+        $password = md5($user['password'] . 'php_and_mysql');
+
+        try {
+            $query    = 'INSERT INTO users VALUES (null, :name, :email, :password)';
+            $category = $pdo->prepare($query);
+            $category->execute([
+              'name'     => $name,
+              'email'    => $email,
+              'password' => $password,
+            ]);
+        } catch (PDOException $e) {
+            $e->getMessage();
+        }
+    }
+}
+
+function populateRoles(PDO $pdo, array $roles)
+{
+    foreach ($roles as $role) {
+        $name     = $role['name'];
+        $description    = $role['description'];
+
+        try {
+            $query    = 'INSERT INTO roles VALUES (null, :name, :description)';
+            $category = $pdo->prepare($query);
+            $category->execute([
+              'name'        => $name,
+              'description' => $description
+            ]);
+        } catch (PDOException $e) {
+            $e->getMessage();
+        }
+    }
+}
+
+function populateUsersRoles(PDO $pdo, array $relations)
+{
+    foreach ($relations['usersRolesRelations'] as $user => $relations) {
+        foreach ($relations as $r) {
+            $query = "INSERT INTO users_roles VALUES ($user, $r)";
+            $pdo->query($query);
+        }
+    }
+}
+
 function isTableExists(PDO $pdo, string $table) : bool
 {
     try {
@@ -98,7 +160,7 @@ function isTableExists(PDO $pdo, string $table) : bool
 function dropTable(PDO $pdo, string $table) : bool
 {
     try {
-        $result = $pdo->query("DROP TABLE $table");
+        $result = $pdo->query("DROP TABLE IF EXISTS $table");
     } catch (PDOException $e) {
         $e->getMessage();
         return false;

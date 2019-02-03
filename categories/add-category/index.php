@@ -5,6 +5,8 @@ $headTitle = 'Добавить категорию';
 global $success;
 $unsuccess = '';
 
+session_start();
+
 if(isset($_POST['submit'])) {
 
     try {

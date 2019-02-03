@@ -2,8 +2,8 @@
 include '../../helpers/connectToDB.php';
 
 $headTitle = 'Добавить статью';
-global $success;
-$unsuccess = '';
+
+session_start();
 
 if(isset($_POST['submit'])) {
     try {
@@ -15,12 +15,34 @@ if(isset($_POST['submit'])) {
         // id of category
         $categoryId = $_POST['category'];
 
-        $query = "INSERT INTO articles VALUES (null, :title, :short_desc, :body, now(), null)";
+        // Upload image
+        $imgDir = "/uploads/images/";
+        @mkdir($imgDir, 0777);
+
+        $data = $_FILES['file'];
+        $tmp =$data['tmp_name'];
+
+        if (is_uploaded_file($tmp)) {
+            $info = @getimagesize($tmp);
+
+            if (preg_match('{image/(.*)}is', $info['mime'], $p)) {
+                $name = "$imgDir" . time() . "." . $p[1];
+                move_uploaded_file($tmp, __DIR__ . "/" . $name);
+            } else {
+                echo "<h2>Вы пы таетесь добавить файл недопустимого формата!</h2>";
+            }
+        } else {
+            echo "<h2>Ошибка закачки #{$data['error']}!</h2>";
+        }
+
+        // Insert article to database
+        $query = "INSERT INTO articles VALUES (null, :title, :short_desc, :body, :img, now(), null)";
         $article = $pdo->prepare($query);
-        $isInsert = $article->execute([
+        $article->execute([
           'title' => $title,
           'short_desc' => $short_desc,
-          'body' => $body
+          'body' => $body,
+          'img' => $name
         ]);
 
         $articleId = $pdo->lastInsertId();
@@ -31,25 +53,6 @@ if(isset($_POST['submit'])) {
           'categoryId' => $categoryId,
           'articleId' => $articleId
         ]);
-
-        $imgDir = $_SERVER['DOCUMENT_ROOT'] . "/uploads/images/" . $articleId . "/";
-        @mkdir($imgDir, 0777);
-
-        $data = $_FILES['file'];
-        $tmp =$data['tmp_name'];
-
-        if (is_uploaded_file($tmp)) {
-            $info = @getimagesize($tmp);
-
-            if (preg_match('{image/(.*)}is', $info['mime'], $p)) {
-                $name = "$imgDir/" . time() . "." . $p[1];
-                move_uploaded_file($tmp, $name);
-            } else {
-                echo "<h2>Вы пы таетесь добавить файл недопустимого формата!</h2>";
-            }
-        } else {
-            echo "<h2>Ошибка закачки #{$data['error']}!</h2>";
-        }
 
         header('Location: /');
     } catch (PDOException $e) {

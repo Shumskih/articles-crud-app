@@ -5,7 +5,7 @@ include_once 'sql/createTablesData.php';
 include 'helpers/monthsInRussian.php';
 
 //Insert fake data to database
-//faker($pdo, $tables, $relations);
+//faker($pdo, $tables, $relations, $users, $roles);
 
 $headTitle = 'Список статей';
 $articlesArr = [];
@@ -15,12 +15,11 @@ try {
     $articles = $pdo->query($query);
 
     $img = $_SERVER['DOCUMENT_ROOT'] . "/uploads/images/";
-
-    // Convert english months to russian months
-//    $date = convertEngDateToRussian(strtotime($articles['datetime']));
 } catch (PDOException $e) {
     echo 'Ошибка извлечения из базы данных<br>' . $e->getMessage();
 }
+
+session_start();
 
 include 'views/articles/index.html.php';
 
