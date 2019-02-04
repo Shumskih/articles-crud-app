@@ -7,29 +7,33 @@ $unsuccess = '';
 
 session_start();
 
-if(isset($_POST['submit'])) {
+if (isset($_SESSION['site_administrator'])) {
+    if(isset($_POST['submit'])) {
 
-    try {
-        $name = $_POST['name'];
+        try {
+            $name = $_POST['name'];
 
-        $query = "INSERT INTO categories VALUES (null, :name)";
-        $category = $pdo->prepare($query);
-        $isInsert = $category->execute([
-          'name' => $name
-        ]);
+            $query = "INSERT INTO categories VALUES (null, :name)";
+            $category = $pdo->prepare($query);
+            $isInsert = $category->execute([
+              'name' => $name
+            ]);
 
-        if($isInsert)
-            $success = 'Категория добавлена';
+            if($isInsert)
+                $success = 'Категория добавлена';
 
-        header('Location: /categories');
-    } catch (PDOException $e) {
-        $unsuccess = 'Ошибка! Статья не добавлена!<br>' . $e->getMessage();
+            header('Location: /categories');
+        } catch (PDOException $e) {
+            $unsuccess = 'Ошибка! Статья не добавлена!<br>' . $e->getMessage();
 
-        header('Location: /categories/add-category');
+            header('Location: /categories/add-category');
+        }
+
+    } else {
+        include '../../views/categories/addCategory.html.php';
     }
-
 } else {
-    include '../../views/categories/addCategory.html.php';
+    include $_SERVER['DOCUMENT_ROOT'] . '/views/denied/index.html.php';
 }
 
 

@@ -77,5 +77,9 @@ $roles = [
   Array(
     'name' => 'Site administrator',
     'description' => 'Adding, deleting and editing categories'
+  ),
+  Array (
+    'name' => 'Writer',
+    'description' => 'User can write and edit his own articles'
   )
 ];

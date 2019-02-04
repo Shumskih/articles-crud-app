@@ -14,7 +14,7 @@
                     <?php if (isset($_SESSION['loggedIn'])): ?>
                         <h1 class="card-title text-center">Вы уже залогинены</h1>
                         <div class="card-text text-center">
-                            <a href="/logout" class="btn btn-outline-info ">Выход</a>
+                            <a href="/logout?logout" class="btn btn-outline-info ">Выход</a>
                         </div>
                     <?php else: ?>
                         <h1 class="card-title text-center">Вход</h1>

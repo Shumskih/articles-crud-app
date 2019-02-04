@@ -15,14 +15,25 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/categories">Категории</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/articles/add-article">Добавить
-                        статью</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/categories/add-category">Добавить
-                        категорию</a>
-                </li>
+
+                <?php if (isset($_SESSION['writer']) or isset($_SESSION['editor'])): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/articles/add-article">Добавить статью</a>
+                    </li>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['site_administrator'])): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/categories/add-category">Добавить категорию</a>
+                    </li>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['account_administrator'])): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/categories/add-category">Редактировать пользователей</a>
+                    </li>
+                <?php endif; ?>
+
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="text"
@@ -33,13 +44,20 @@
             </form>
             <div class="my-2 my-lg-0">
                 <ul class="navbar-nav mr-auto">
+
                     <?php if (isset($_SESSION['loggedIn'])): ?>
                         <li class="nav-item">
-                            <a class="nav-link">Здравствуйте, <?php echo $_SESSION['email'] ?></a>
+                            <a class="nav-link">Здравствуйте,
+                                <?php if (isset($_SESSION['name']))
+                                        echo $_SESSION['name'];
+                                      else
+                                        echo $_SESSION['email'] ?>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/logout" class="nav-link">Выход</a>
+                            <a href="/logout?logout" class="nav-link">Выход</a>
                         </li>
+
                     <?php else: ?>
                         <li class="nav-item active">
                             <a class="nav-link" href="/login">Вход</a>

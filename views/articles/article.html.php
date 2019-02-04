@@ -20,6 +20,8 @@
                         <div class="text-lg-right">
                             <?php echo $date; ?>
                         </div>
+
+                        <?php if (isset($_SESSION['editor'])): ?>
                         <div class="d-inline-flex p-2">
                             <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                                 <input type="hidden" name="id" value="<?php echo $res['id'] ?>">
@@ -27,6 +29,8 @@
                             </form>
                             <a href="/articles/change-article?id=<?php echo $res['id'] ?>" class="btn btn-outline-info">Изменить</a>
                         </div>
+                        <?php endif; ?>
+
                     </div>
                 </div>
             </div>

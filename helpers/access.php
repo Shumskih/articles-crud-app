@@ -70,3 +70,25 @@ function userHasRole(PDO $pdo, $role)
         return false;
     }
 }
+
+function databaseContainsEmail(PDO $pdo, string $email)
+{
+    try {
+        $query = 'SELECT * FROM users WHERE email = :email';
+        $user = $pdo->prepare($query);
+        $user->execute([
+          'email' => $email
+        ]);
+    } catch (PDOException $e) {
+        $e->getMessage();
+        exit();
+    }
+
+    $row = $user->fetch();
+
+    if ($row[0] > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}

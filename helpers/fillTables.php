@@ -1,5 +1,7 @@
 <?php
 
+//define('START_TIME', microtime(true));
+
 require 'autoload.php';
 
 function faker(PDO $pdo, array $tables, array $relations, array $users, array $roles)
@@ -194,3 +196,5 @@ function createTable(PDO $pdo, string $table, string $columns) {
         echo "Не удалось создать таблицу $table<br>" . $e->getMessage();
     }
 }
+
+//echo printf("Время выполнения скрипта: %.5f c", microtime(true) - START_TIME);
