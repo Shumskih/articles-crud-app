@@ -40,4 +40,6 @@
     <?php endforeach; ?>
 </div>
 </body>
+<!--scripts-->
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/views/partials/scripts.ink.php' ?>
 </html>

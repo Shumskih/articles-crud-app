@@ -20,11 +20,12 @@ if (isset($_POST['submit'])) {
     $email = $_POST['email'];
     $password = md5($_POST['password'] . 'php_and_mysql');
 
-    if (databaseContainsUser($pdo, $email, $password)) {
+    if ($name = databaseContainsUser($pdo, $email, $password)) {
         $email = $_POST['email'];
         $_SESSION['loggedIn'] = true;
         $_SESSION['email'] = $email;
         $_SESSION['password'] = $password;
+        $_SESSION['name'] = $name;
 
         $query = 'SELECT roles.id FROM roles
                   INNER JOIN users_roles on roles.id = users_roles.role_id
@@ -47,6 +48,9 @@ if (isset($_POST['submit'])) {
 
             if ($per['id'] = 4)
                 $_SESSION['writer'] = true;
+
+            if ($per['id'] = 5)
+                $_SESSION['moderator'] = true;
         }
 
         $redirectToMainPage = true;

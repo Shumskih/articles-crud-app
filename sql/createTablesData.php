@@ -41,7 +41,7 @@ $relations = [
     5 => [9, 10]
 ],
   'usersRolesRelations' => [
-    1 => [1,2,3],
+    1 => [1,2,3,4,5],
     2 => [3],
     3 => [2]
     ]
@@ -81,5 +81,9 @@ $roles = [
   Array (
     'name' => 'Writer',
     'description' => 'User can write and edit his own articles'
+  ),
+  Array (
+    'name' => 'Moderator',
+    'description' => 'Moderate articles. Approve or disapprove publication'
   )
 ];

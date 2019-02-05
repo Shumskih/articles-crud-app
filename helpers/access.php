@@ -39,7 +39,7 @@ function databaseContainsUser(PDO $pdo, string $email, string $password)
     $row = $user->fetch();
 
     if ($row[0] > 0) {
-        return true;
+        return $row['name'];
     } else {
         return false;
     }

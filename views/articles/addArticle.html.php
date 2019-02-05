@@ -28,12 +28,20 @@
                 <textarea name="body" id="body" rows="10" class="form-control" placeholder="Текст статьи" required></textarea>
             </div>
             <div class="form-group">
-                <label for="exampleInputFile">Добавить изображение:</label>
-                <input type="file" name="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
-                <small id="fileHelp" class="form-text text-muted">Добавьте изображение. Оно будет отображаться в превью статьи и на странице статьи</small>
+                <div class="input-group ml-n2 col-lg-7">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="file">
+                        <label class="custom-file-label" for="file">Загрузите изображение</label>
+                    </div>
+                </div>
             </div>
             <input type="submit" name="submit" value="Отправить" class="btn btn-outline-primary">
         </form>
+
+
+
     </div>
 </body>
+    <!--scripts-->
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/views/partials/scripts.ink.php' ?>
 </html>

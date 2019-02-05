@@ -1,3 +1,5 @@
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/helpers/categoriesMenu.php' ?>
+
 <div class="bs-component">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" href="/">Article</a>
@@ -12,9 +14,19 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/">Главная <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/categories">Категории</a>
-                </li>
+                <ul class="nav nav-pills">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Категории</a>
+                        <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 50px, 0px); top: 0px; left: 0px; will-change: transform;">
+
+                            <?php while ($category = $categories->fetch()): ?>
+                                <a class="dropdown-item" href="/categories?id=<?php echo $category['id'] ?>"><?php echo $category['name'] ?></a>
+                                <div class="dropdown-divider"></div>
+                            <?php endwhile; ?>
+
+                        </div>
+                    </li>
+                </ul>
 
                 <?php if (isset($_SESSION['writer']) or isset($_SESSION['editor'])): ?>
                     <li class="nav-item">
@@ -32,6 +44,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/categories/add-category">Редактировать пользователей</a>
                     </li>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['moderator'])): ?>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <a href="">
+                                Модерировать
+                            </a>
+                            <span class="badge badge-primary badge-pill"><?php echo $countRows ?></span>
+                        </li>
+                    </ul>
                 <?php endif; ?>
 
             </ul>
