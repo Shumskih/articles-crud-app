@@ -35,6 +35,11 @@ if (isset($_POST['register'])) {
               'password' => $password
             ]);
 
+            $userId = $pdo->lastInsertId();
+
+            $query = "INSERT INTO users_roles VALUES ($userId, 4)";
+            $user = $pdo->query($query);
+
             $redirectToMainPage = true;
             include $_SERVER['DOCUMENT_ROOT'] . '/views/registration/success/success.html.php';
         }

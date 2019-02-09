@@ -10,7 +10,8 @@ include 'helpers/monthsInRussian.php';
 $headTitle = 'Список статей';
 
 try {
-    $query = 'SELECT id, title, short_desc, img, datetime FROM articles ORDER BY datetime DESC';
+    $query = 'SELECT id, title, short_desc, img, datetime FROM articles 
+              WHERE published = true ORDER BY datetime DESC';
     $articles = $pdo->query($query);
 
     $img = __DIR__ . "/uploads/images/";

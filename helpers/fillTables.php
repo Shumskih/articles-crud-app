@@ -42,6 +42,9 @@ function faker(PDO $pdo, array $tables, array $relations, array $users, array $r
 
         if ($table == 'users_roles')
             populateUsersRoles($pdo, $relations);
+
+        if ($table == 'users_articles')
+            populateUsersArticles($pdo, $relations);
     }
 }
 
@@ -62,7 +65,7 @@ function populateArticles(PDO $pdo)
             $body .= $b . "<br>";
         }
 
-        $query = 'INSERT INTO articles VALUES (null, :title, :short_desc, :body, :img, now(), null)';
+        $query = 'INSERT INTO articles VALUES (null, :title, :short_desc, :body, :img, now(), null, true, false, false, null)';
         $article = $pdo->prepare($query);
         $article->execute([
           'title' => $articleTitle,
@@ -143,6 +146,16 @@ function populateUsersRoles(PDO $pdo, array $relations)
     foreach ($relations['usersRolesRelations'] as $user => $relations) {
         foreach ($relations as $r) {
             $query = "INSERT INTO users_roles VALUES ($user, $r)";
+            $pdo->query($query);
+        }
+    }
+}
+
+function populateUsersArticles(PDO $pdo, array $relations)
+{
+    foreach ($relations['usersArticlesRelations'] as $user => $relations) {
+        foreach ($relations as $r) {
+            $query = "INSERT INTO users_articles VALUES ($user, $r)";
             $pdo->query($query);
         }
     }

@@ -1,4 +1,5 @@
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/helpers/categoriesMenu.php' ?>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/helpers/moderateArticlesCounter.php' ?>
 
 <div class="bs-component">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -19,10 +20,10 @@
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Категории</a>
                         <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 50px, 0px); top: 0px; left: 0px; will-change: transform;">
 
-                            <?php while ($category = $categories->fetch()): ?>
+                            <?php foreach ($categories as $category): ?>
                                 <a class="dropdown-item" href="/categories?id=<?php echo $category['id'] ?>"><?php echo $category['name'] ?></a>
                                 <div class="dropdown-divider"></div>
-                            <?php endwhile; ?>
+                            <?php endforeach; ?>
 
                         </div>
                     </li>
@@ -42,17 +43,17 @@
 
                 <?php if (isset($_SESSION['account_administrator'])): ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/categories/add-category">Редактировать пользователей</a>
+                        <a class="nav-link" href="/users">Редактировать пользователей</a>
                     </li>
                 <?php endif; ?>
 
                 <?php if (isset($_SESSION['moderator'])): ?>
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <a href="">
+                            <a href="/articles/moderate">
                                 Модерировать
                             </a>
-                            <span class="badge badge-primary badge-pill"><?php echo $countRows ?></span>
+                            <span class="badge badge-primary badge-pill"><?php echo $moderateArticlesCount ?></span>
                         </li>
                     </ul>
                 <?php endif; ?>

@@ -1,8 +1,5 @@
 <?php
 
-$query = 'SELECT * FROM categories';
-$categories = $pdo->query($query);
-
-$query = 'SELECT COUNT(*) from articles';
-$count = $pdo->query($query);
-$countRows = $count->fetchColumn();
+$query = 'SELECT * FROM categories ORDER BY name';
+$doQuery = $pdo->query($query);
+$categories = $doQuery->fetchAll();

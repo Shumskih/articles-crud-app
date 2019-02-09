@@ -1,13 +1,17 @@
 <?php
 
 $tables = [
-  'articles' => 'id         int auto_increment primary key not null,
-                 title      varchar(200)                   not null,
-                 short_desc varchar(500)                   not null,
-                 body       text                           not null,
-                 img        varchar(200)                       null,
-                 datetime   datetime                       not null,
-                 changed    datetime',
+  'articles' => 'id                      int auto_increment primary key not null, 
+                 title                   varchar(200)                   not null,
+                 short_desc              varchar(500)                   not null,
+                 body                    text                           not null,
+                 img                     varchar(200)                       null,
+                 datetime                datetime                       not null,
+                 changed                 datetime,
+                 published               boolean                        not null,
+                 returned                boolean                        not null,
+                 moderate                boolean                        not null,
+                 comments_of_moderator   text',
 
   'categories' => 'id   int auto_increment primary key not null,
                    name varchar(500)',
@@ -29,7 +33,10 @@ $tables = [
   'users_roles' => 'user_id int not null,
                     role_id int not null,
                     foreign key (user_id) references users (id),
-                    foreign key (role_id) references roles (id)'
+                    foreign key (role_id) references roles (id)',
+
+  'users_articles' => 'user_id    int not null,
+                       article_id int not null',
 ];
 
 $relations = [
@@ -44,7 +51,12 @@ $relations = [
     1 => [1,2,3,4,5],
     2 => [3],
     3 => [2]
-    ]
+    ],
+  'usersArticlesRelations' => [
+    1 => [1,3,5],
+    2 => [2,4,6],
+    3 => [7,8,9,10]
+  ]
 ];
 
 $users = [
@@ -59,8 +71,8 @@ $users = [
     'password' => 'password'
   ),
   Array(
-    'name' => 'Siri',
-    'email' => 'siri@apple.com',
+    'name' =>     'Siri',
+    'email' =>    'siri@apple.com',
     'password' => '5555555'
   )
 ];

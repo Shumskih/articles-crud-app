@@ -37,25 +37,47 @@ if (isset($_SESSION['editor']) or isset($_SESSION['writer'])) {
             }
 
             // Insert article to database
-            $query = "INSERT INTO articles VALUES (null, :title, :short_desc, :body, :img, now(), null)";
-            $article = $pdo->prepare($query);
-            $article->execute([
-              'title' => $title,
-              'short_desc' => $short_desc,
-              'body' => $body,
-              'img' => $name
-            ]);
+            if ($_SESSION('editor') or $_SESSION('moderator')) {
+                $query = "INSERT INTO articles VALUES (null, :title, :short_desc, :body, :img, now(), null, true, false, false, null)";
+                $article = $pdo->prepare($query);
+                $article->execute([
+                  'title' => $title,
+                  'short_desc' => $short_desc,
+                  'body' => $body,
+                  'img' => $name
+                ]);
 
-            $articleId = $pdo->lastInsertId();
+                $articleId = $pdo->lastInsertId();
 
-            $query = "INSERT INTO categories_articles VALUES (:categoryId, :articleId)";
-            $res = $pdo->prepare($query);
-            $res->execute([
-              'categoryId' => $categoryId,
-              'articleId' => $articleId
-            ]);
+                $query = "INSERT INTO categories_articles VALUES (:categoryId, :articleId)";
+                $res = $pdo->prepare($query);
+                $res->execute([
+                  'categoryId' => $categoryId,
+                  'articleId' => $articleId
+                ]);
 
-            header('Location: /');
+                header('Location: /');
+            } else {
+                $query = "INSERT INTO articles VALUES (null, :title, :short_desc, :body, :img, now(), null, false, false, true, null)";
+                $article = $pdo->prepare($query);
+                $article->execute([
+                  'title' => $title,
+                  'short_desc' => $short_desc,
+                  'body' => $body,
+                  'img' => $name
+                ]);
+
+                $articleId = $pdo->lastInsertId();
+
+                $query = "INSERT INTO categories_articles VALUES (:categoryId, :articleId)";
+                $res = $pdo->prepare($query);
+                $res->execute([
+                  'categoryId' => $categoryId,
+                  'articleId' => $articleId
+                ]);
+
+                include '../../views/articles/moderate/to-moderator.html.php';
+            }
         } catch (PDOException $e) {
             echo 'Ошибка! Статья не добавлена!<br>' . $e->getMessage();
 
@@ -64,7 +86,7 @@ if (isset($_SESSION['editor']) or isset($_SESSION['writer'])) {
 
     } else {
         $query = "SELECT * FROM categories ORDER BY name";
-        $categories = $pdo->query($query);
+        $categoriess = $pdo->query($query);
 
         include '../../views/articles/addArticle.html.php';
     }

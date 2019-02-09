@@ -1,21 +1,25 @@
 <!doctype html>
 <html lang="en">
     <?php include '../../views/partials/head.inc.php' ?>
+
 <body>
     <?php include '../../views/partials/nav.inc.php' ?>
 
     <div class="container">
-        <h1 class="text-center mt-5 mb-5"><?php echo $headTitle ?></h1>
+        <h1 class="text-center mt-5 mb-5">
+            <?php echo $headTitle ?>
+            <hr>
+        </h1>
 
         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="POST" enctype="multipart/form-data" class="mb-5">
             <div class="form-group">
                 <select class="custom-select" name="category">
                     <option selected="">Выбор категории:</option>
-                    <?php while ($category = $categories->fetch()): ?>
+                    <?php foreach ($categories as $category): ?>
                         <option value="<?php echo $category['id'] ?>">
                             <?php echo $category['name'] ?>
                         </option>
-                    <?php endwhile; ?>
+                    <?php endforeach; ?>
                 </select>
             </div>
             <div class="form-group">
