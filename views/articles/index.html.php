@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include 'views/partials/head.inc.php'; ?>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/views/partials/head.inc.php'; ?>
 
 <body>
-<?php include 'views/partials/nav.inc.php' ?>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/views/partials/nav.inc.php' ?>
 
 <div class="container">
 

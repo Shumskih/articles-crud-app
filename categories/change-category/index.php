@@ -4,10 +4,9 @@ include '../../helpers/connectToDB.php';
 session_start();
 
 // Select from database article by id
-if (isset($_GET['id'])) {
-    if (!isset($_SESSION['site_administrator'])) {
-        include $_SERVER['DOCUMENT_ROOT'] . '/views/denied/index.html.php';
-    } else {
+if (isset($_GET['id']) && !isset($_SESSION['site_administrator']))
+    include $_SERVER['DOCUMENT_ROOT'] . '/views/denied/index.html.php';
+else {
         $id = $_GET['id'];
         try {
             $query   = 'SELECT name FROM categories WHERE id = :id';
@@ -41,7 +40,6 @@ if (isset($_GET['id'])) {
         } catch (PDOException $e) {
             echo 'Ошибка изменения категории<br>' . $e->getMessage();
         }
-    }
     }
 
 if (isset($_POST['cancel'])) {

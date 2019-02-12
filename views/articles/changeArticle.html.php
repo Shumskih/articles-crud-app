@@ -22,7 +22,7 @@
             <textarea name="body" id="body" rows="10" class="form-control" required><?php echo $body ?></textarea>
         </div>
         <input type="submit" name="submit" value="Изменить" class="btn btn-outline-primary">
-        <input type="submit" name="cancel" value="Отменить" class="btn btn-outline-warning">
+        <a href="/articles?id=<?php echo $id ?>" class="btn btn-outline-warning">Отменить</a>
     </form>
 </div>
 </body>
