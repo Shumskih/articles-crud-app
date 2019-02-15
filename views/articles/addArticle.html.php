@@ -34,7 +34,7 @@
             <div class="form-group">
                 <div class="input-group ml-n2 col-lg-7">
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="file">
+                        <input type="file" name="file" class="custom-file-input" id="file">
                         <label class="custom-file-label" for="file">Загрузите изображение</label>
                     </div>
                 </div>

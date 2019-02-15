@@ -20,7 +20,7 @@
                              src="<?php echo $article['img'] ?>"
                              alt="Card image">
                         <div class="card-body">
-                            <a href="/articles?id=<?php echo $article['id'] ?>">
+                            <a href="/articles/moderate/article?id=<?php echo $article['id'] ?>">
                                 <h5 class="card-title"><?php echo $article['title']; ?></h5>
                             </a>
                             <h6 class="card-subtitle text-muted"><?php echo $article['short_desc']; ?></h6>

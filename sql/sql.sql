@@ -44,3 +44,17 @@ create table users_roles
   foreign key (user_id) references users (id),
   foreign key (role_id) references roles (id)
 );
+
+create table messages
+(
+  id      int auto_increment primary key not null,
+  message text not null
+);
+
+create table articles_messages
+(
+  article_id int not null,
+  message_id int not null,
+  foreign key (article_id) references articles (id),
+  foreign key (message_id) references messages (id)
+);

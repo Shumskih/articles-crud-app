@@ -5,14 +5,12 @@ include $_SERVER['DOCUMENT_ROOT'] . '/helpers/access.php';
 
 $headTitle = 'Вход';
 
-session_start();
-
 if (isset($_POST['submit'])) {
 
     if (!isset($_POST['email']) or $_POST['email'] == '' or
         !isset($_POST['password']) or $_POST['password'] == '') {
 
-        $GLOBALS['loginError'] = 'Необходимо заполнить все поля';
+        $loginError = 'Необходимо заполнить все поля';
 
         include $_SERVER['DOCUMENT_ROOT'] . '/views/login/login.html.php';
     }
@@ -21,6 +19,8 @@ if (isset($_POST['submit'])) {
     $password = md5($_POST['password'] . 'php_and_mysql');
 
     if ($name = databaseContainsUser($pdo, $email, $password)) {
+        session_start();
+
         $email = $_POST['email'];
         $_SESSION['loggedIn'] = true;
         $_SESSION['email'] = $email;
@@ -53,19 +53,12 @@ if (isset($_POST['submit'])) {
                 $_SESSION['moderator'] = true;
         }
 
+        unset($permissions);
+
         $redirectToMainPage = true;
         include $_SERVER['DOCUMENT_ROOT'] . '/views/login/success/success.html.php';
     } else {
-        unset($_SESSION['loggedIn']);
-        unset($_SESSION['email']);
-        unset($_SESSION['password']);
-        unset($_SESSION['editor']);
-        unset($_SESSION['account_administrator']);
-        unset($_SESSION['site_administrator']);
-        $_SESSION = array();
-        session_destroy();
-
-        $GLOBALS['loginError'] = 'Указан неверный адрес электронной почты или пароль';
+        $loginError = 'Такой пользователь не зарегистрирован.';
 
         include $_SERVER['DOCUMENT_ROOT'] . '/views/login/login.html.php';
     }

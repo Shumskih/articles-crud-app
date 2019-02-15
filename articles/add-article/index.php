@@ -28,16 +28,16 @@ if (isset($_SESSION['editor']) or isset($_SESSION['writer'])) {
 
                 if (preg_match('{image/(.*)}is', $info['mime'], $p)) {
                     $name = "$imgDir" . time() . "." . $p[1];
-                    move_uploaded_file($tmp, __DIR__ . "/" . $name);
+                    move_uploaded_file($tmp, $_SERVER['DOCUMENT_ROOT'] . '/' . $name);
                 } else {
-                    echo "<h2>Вы пы таетесь добавить файл недопустимого формата!</h2>";
+                    echo "<h2>Вы пытаетесь добавить файл недопустимого формата!</h2>";
                 }
             } else {
                 echo "<h2>Ошибка закачки #{$data['error']}!</h2>";
             }
 
             // Insert article to database
-            if ($_SESSION('editor') or $_SESSION('moderator')) {
+            if (isset($_SESSION['editor']) or isset($_SESSION['moderator'])) {
                 $query = "INSERT INTO articles VALUES (null, :title, :short_desc, :body, :img, now(), null, true, false, false, null)";
                 $article = $pdo->prepare($query);
                 $article->execute([

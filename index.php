@@ -10,7 +10,7 @@ include 'helpers/monthsInRussian.php';
 $headTitle = 'Список статей';
 
 try {
-    $query = 'SELECT id, title, short_desc, img, datetime FROM articles 
+    $query = 'SELECT id, title, short_desc, img, datetime FROM articles
               WHERE published = true ORDER BY datetime DESC';
     $articles = $pdo->query($query);
 
@@ -22,4 +22,3 @@ try {
 session_start();
 
 include __DIR__ . '/views/articles/index.html.php';
-
