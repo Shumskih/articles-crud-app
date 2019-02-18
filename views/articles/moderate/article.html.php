@@ -22,17 +22,16 @@
                 </div>
 
                 <?php if (isset($_SESSION['editor'])): ?>
-                    <div class="d-inline-flex p-2">
+                    <div>
                         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="POST">
                             <div class="form-group mt-4">
                                 <textarea class="form-control" name="messageBody" rows="7" placeholder="Если необходимо внести правки, здесь пишется сообщение автору, в котором описывается, что нужно изменить."></textarea>
                             </div>
                             <input type="hidden" name="id" value="<?php echo $res['id'] ?>">
-<!--                            <button class="btn btn-outline-success mr-1" type="submit" name="publish">Опубликовать</button>-->
+                            <button class="btn btn-outline-success mr-1" type="submit" name="publish">Опубликовать</button>
                             <input class="btn btn-outline-warning mr-1" type="submit" name="message" value="Сообщение автору">
                         </form>
                     </div>
-
                 <?php endif; ?>
             </div>
         </div>

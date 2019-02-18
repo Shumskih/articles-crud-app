@@ -9,7 +9,10 @@ session_start();
 
 if(isset($_GET['id'])) {
     try {
-        $query = 'SELECT id, title, body, datetime FROM articles WHERE id = :id';
+        $query = 'SELECT articles.id as articleId, title, body, datetime, published, users.id as userId FROM articles
+                  INNER JOIN users_articles on users_articles.article_id = articles.id
+                  INNER JOIN users on users_articles.user_id = users.id
+                  WHERE articles.id = :id';
         $article = $pdo->prepare($query);
         $article->execute(['id' => $_GET['id']]);
         $res = $article->fetch();
@@ -22,12 +25,22 @@ if(isset($_GET['id'])) {
         echo 'Ошибка извлечения статьи из БД<br>' . $e->getMessage();
     }
 
-    include '../views/articles/article.html.php';
+    if ($res['published'] == 0)
+        header('Location: /');
+    else {
+        include $_SERVER['DOCUMENT_ROOT'] . '/views/articles/article.html.php';
+    }
 }
 
 if(isset($_POST['delete'])) {
     try {
         $query = 'DELETE from categories_articles WHERE article_id = :id';
+        $article = $pdo->prepare($query);
+        $article->execute([
+          'id' => $_POST['id']
+        ]);
+
+        $query = 'DELETE from users_articles WHERE article_id = :id';
         $article = $pdo->prepare($query);
         $article->execute([
           'id' => $_POST['id']

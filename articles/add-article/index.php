@@ -16,6 +16,9 @@ if (isset($_SESSION['editor']) or isset($_SESSION['writer'])) {
             // id of category
             $categoryId = $_POST['category'];
 
+            // id of user
+            $userId = $_SESSION['user_id'];
+
             // Upload image
             $imgDir = "/uploads/images/";
             @mkdir($imgDir, 0777);
@@ -56,6 +59,13 @@ if (isset($_SESSION['editor']) or isset($_SESSION['writer'])) {
                   'articleId' => $articleId
                 ]);
 
+                $query = "INSERT INTO users_articles VALUES (:userId, :articleId)";
+                $res = $pdo->prepare($query);
+                $res->execute([
+                  'userId' => $userId,
+                  'articleId' => $articleId
+                ]);
+
                 header('Location: /');
             } else {
                 $query = "INSERT INTO articles VALUES (null, :title, :short_desc, :body, :img, now(), null, false, false, true, null)";
@@ -76,22 +86,27 @@ if (isset($_SESSION['editor']) or isset($_SESSION['writer'])) {
                   'articleId' => $articleId
                 ]);
 
-                include '../../views/articles/moderate/to-moderator.html.php';
+                $query = "INSERT INTO users_articles VALUES (:userId, :articleId)";
+                $res = $pdo->prepare($query);
+                $res->execute([
+                  'userId' => $userId,
+                  'articleId' => $articleId
+                ]);
+
+                include $_SERVER['DOCUMENT_ROOT'] . '/views/articles/moderate/to-moderator.html.php';
             }
         } catch (PDOException $e) {
             echo 'Ошибка! Статья не добавлена!<br>' . $e->getMessage();
 
-            include '../../views/articles/addArticle.html.php';
+            include $_SERVER['DOCUMENT_ROOT'] . '/views/articles/addArticle.html.php';
         }
 
     } else {
         $query = "SELECT * FROM categories ORDER BY name";
         $categoriess = $pdo->query($query);
 
-        include '../../views/articles/addArticle.html.php';
+        include $_SERVER['DOCUMENT_ROOT'] . '/views/articles/addArticle.html.php';
     }
 } else {
     include $_SERVER['DOCUMENT_ROOT'] . '/views/denied/index.html.php';
 }
-
-

@@ -27,8 +27,8 @@ if (isset($_POST['submit'])) {
         $_SESSION['password'] = $password;
         $_SESSION['name'] = $name;
 
-        $query = 'SELECT roles.id FROM roles
-                  INNER JOIN users_roles on roles.id = users_roles.role_id
+        $query = 'SELECT roles.id, users.id as userId FROM roles
+                  INNER JOIN users_roles on  users_roles.role_id = roles.id
                   INNER JOIN users on users_roles.user_id = users.id
                   WHERE email = :email';
         $permissions = $pdo->prepare($query);
@@ -46,14 +46,14 @@ if (isset($_POST['submit'])) {
             if ($perm['id'] == 3)
                 $_SESSION['site_administrator'] = true;
 
-            if ($per['id'] = 4)
+            if ($perm['id'] == 4)
                 $_SESSION['writer'] = true;
 
-            if ($per['id'] = 5)
+            if ($perm['id'] == 5)
                 $_SESSION['moderator'] = true;
-        }
 
-        unset($permissions);
+            $_SESSION['user_id'] = $perm['userId'];
+        }
 
         $redirectToMainPage = true;
         include $_SERVER['DOCUMENT_ROOT'] . '/views/login/success/success.html.php';

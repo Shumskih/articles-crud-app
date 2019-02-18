@@ -21,13 +21,13 @@
                             <?php echo $date; ?>
                         </div>
 
-                        <?php if (isset($_SESSION['editor'])): ?>
+                        <?php if (isset($_SESSION['editor']) || ($_SESSION['user_id'] == $res['userId'])): ?>
                         <div class="d-inline-flex p-2">
                             <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
-                                <input type="hidden" name="id" value="<?php echo $res['id'] ?>">
+                                <input type="hidden" name="id" value="<?php echo $res['articleId'] ?>">
                                 <button class="btn btn-outline-danger mr-1" type="submit" name="delete">Удалить</button>
                             </form>
-                            <a href="/articles/change-article?id=<?php echo $res['id'] ?>" class="btn btn-outline-info">Изменить</a>
+                            <a href="/articles/edit-article?id=<?php echo $res['articleId'] ?>" class="btn btn-outline-info">Изменить</a>
                         </div>
                         <?php endif; ?>
 

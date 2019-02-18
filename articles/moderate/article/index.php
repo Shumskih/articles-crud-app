@@ -7,7 +7,23 @@ $headTitle = '';
 
 session_start();
 
-if (isset($_GET['id']) && !isset($_POST['message'])) {
+if (isset($_POST['publish'])) {
+    $articleId = $_POST['id'];
+
+    try {
+        $query = 'UPDATE articles SET published = 1, returned = 0, moderate = 0 WHERE id = :articleId';
+        $doQuery = $pdo->prepare($query);
+        $doQuery->execute([
+          'articleId' => $articleId
+        ]);
+    } catch (PDOException $e) {
+        $e->getMessage();
+    }
+
+    header('Location: /');
+}
+
+if (isset($_GET['id']) && !isset($_POST['message']) && !isset($_POST['publish'])) {
     try {
         $query = 'SELECT id, title, body, datetime FROM articles WHERE id = :id';
         $article = $pdo->prepare($query);
@@ -43,6 +59,12 @@ if (isset($_POST['message'])) {
         $doQuery->execute([
           'articleId' => $articleId,
           'messageId' => $messageId
+        ]);
+
+        $query = 'UPDATE articles SET returned = 1, moderate = 0 WHERE id = :articleId';
+        $doQuery = $pdo->prepare($query);
+        $doQuery->execute([
+          'articleId' => $articleId
         ]);
     } catch (PDOException $e) {
         $e->getMessage();
