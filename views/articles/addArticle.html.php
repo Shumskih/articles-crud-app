@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
-    <?php include '../../views/partials/head.inc.php' ?>
+    <?php include ROOT . '/views/partials/head.inc.php' ?>
 
 <body>
-    <?php include '../../views/partials/nav.inc.php' ?>
+    <?php include ROOT . '/views/partials/nav.inc.php' ?>
 
     <div class="container">
         <h1 class="text-center mt-5 mb-5">
@@ -47,5 +47,5 @@
     </div>
 </body>
     <!--scripts-->
-    <?php include $_SERVER['DOCUMENT_ROOT'] . '/views/partials/scripts.ink.php' ?>
+    <?php include ROOT . '/views/partials/scripts.ink.php' ?>
 </html>

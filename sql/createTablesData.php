@@ -10,8 +10,7 @@ $tables = [
                  changed                 datetime,
                  published               boolean                        not null,
                  returned                boolean                        not null,
-                 moderate                boolean                        not null,
-                 comments_of_moderator   text',
+                 moderate                boolean                        not null',
 
   'categories' => 'id   int auto_increment primary key not null,
                    name varchar(500)',

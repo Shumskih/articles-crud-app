@@ -1,5 +1,9 @@
 <?php
-include '../../helpers/connectToDB.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
+require_once ROOT . '/helpers/connectToDB.php';
+require_once ROOT . '/dao/ArticleDao.php';
+require_once ROOT . '/dao/CategoryDao.php';
+require_once ROOT . '/helpers/UploadFile.php';
 
 $headTitle = 'Добавить статью';
 
@@ -7,106 +11,40 @@ session_start();
 
 if (isset($_SESSION['editor']) or isset($_SESSION['writer'])) {
     if(isset($_POST['submit'])) {
-        try {
-            // article
-            $title = $_POST['title'];
-            $short_desc = $_POST['short_desc'];
-            $body = $_POST['body'];
+      // article
+      $title = $_POST['title'];
+      $short_desc = $_POST['short_desc'];
+      $body = $_POST['body'];
 
-            // id of category
-            $categoryId = $_POST['category'];
+      // id of category
+      $categoryId = $_POST['category'];
 
-            // id of user
-            $userId = $_SESSION['user_id'];
+      // id of user
+      $userId = $_SESSION['user_id'];
 
-            // Upload image
-            $imgDir = "/uploads/images/";
-            @mkdir($imgDir, 0777);
+      // file
+      $data = $_FILES['file'];
 
-            $data = $_FILES['file'];
-            $tmp =$data['tmp_name'];
+      // image dir
+      $imgDir = "/uploads/images/";
 
-            if (is_uploaded_file($tmp)) {
-                $info = @getimagesize($tmp);
+      $name = UploadFile::upload($imgDir, $data);
 
-                if (preg_match('{image/(.*)}is', $info['mime'], $p)) {
-                    $name = "$imgDir" . time() . "." . $p[1];
-                    move_uploaded_file($tmp, $_SERVER['DOCUMENT_ROOT'] . '/' . $name);
-                } else {
-                    echo "<h2>Вы пытаетесь добавить файл недопустимого формата!</h2>";
-                }
-            } else {
-                echo "<h2>Ошибка закачки #{$data['error']}!</h2>";
-            }
+      // Insert article to database
+      if (isset($_SESSION['editor']) or isset($_SESSION['moderator'])) {
+        ArticleDao::insertArticlePublished($pdo, $title, $short_desc, $body, $name, $categoryId, $userId);
 
-            // Insert article to database
-            if (isset($_SESSION['editor']) or isset($_SESSION['moderator'])) {
-                $query = "INSERT INTO articles VALUES (null, :title, :short_desc, :body, :img, now(), null, true, false, false, null)";
-                $article = $pdo->prepare($query);
-                $article->execute([
-                  'title' => $title,
-                  'short_desc' => $short_desc,
-                  'body' => $body,
-                  'img' => $name
-                ]);
+        header('Location: /');
+      } else {
+        ArticleDao::insertArticleUnpublished($pdo, $title, $short_desc, $body, $name, $categoryId, $userId);
 
-                $articleId = $pdo->lastInsertId();
-
-                $query = "INSERT INTO categories_articles VALUES (:categoryId, :articleId)";
-                $res = $pdo->prepare($query);
-                $res->execute([
-                  'categoryId' => $categoryId,
-                  'articleId' => $articleId
-                ]);
-
-                $query = "INSERT INTO users_articles VALUES (:userId, :articleId)";
-                $res = $pdo->prepare($query);
-                $res->execute([
-                  'userId' => $userId,
-                  'articleId' => $articleId
-                ]);
-
-                header('Location: /');
-            } else {
-                $query = "INSERT INTO articles VALUES (null, :title, :short_desc, :body, :img, now(), null, false, false, true, null)";
-                $article = $pdo->prepare($query);
-                $article->execute([
-                  'title' => $title,
-                  'short_desc' => $short_desc,
-                  'body' => $body,
-                  'img' => $name
-                ]);
-
-                $articleId = $pdo->lastInsertId();
-
-                $query = "INSERT INTO categories_articles VALUES (:categoryId, :articleId)";
-                $res = $pdo->prepare($query);
-                $res->execute([
-                  'categoryId' => $categoryId,
-                  'articleId' => $articleId
-                ]);
-
-                $query = "INSERT INTO users_articles VALUES (:userId, :articleId)";
-                $res = $pdo->prepare($query);
-                $res->execute([
-                  'userId' => $userId,
-                  'articleId' => $articleId
-                ]);
-
-                include $_SERVER['DOCUMENT_ROOT'] . '/views/articles/moderate/to-moderator.html.php';
-            }
-        } catch (PDOException $e) {
-            echo 'Ошибка! Статья не добавлена!<br>' . $e->getMessage();
-
-            include $_SERVER['DOCUMENT_ROOT'] . '/views/articles/addArticle.html.php';
-        }
-
+        include ROOT . '/views/articles/moderate/to-moderator.html.php';
+      }
     } else {
-        $query = "SELECT * FROM categories ORDER BY name";
-        $categoriess = $pdo->query($query);
+        $categories = CategoryDao::getAllCategories($pdo);
 
-        include $_SERVER['DOCUMENT_ROOT'] . '/views/articles/addArticle.html.php';
+        include ROOT . '/views/articles/addArticle.html.php';
     }
 } else {
-    include $_SERVER['DOCUMENT_ROOT'] . '/views/denied/index.html.php';
+    include ROOT . '/views/denied/index.html.php';
 }

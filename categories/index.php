@@ -30,10 +30,10 @@ if(isset($_GET['id'])) {
     $articlesArr = [];
 
     try {
-        $query = "SELECT articles.id, title, short_desc FROM articles
+        $query = "SELECT articles.id, title, short_desc, published FROM articles
                   LEFT JOIN categories_articles on articles.id = categories_articles.article_id
                   LEFT JOIN categories on categories_articles.category_id = categories.id
-                  WHERE categories.id = $categoryId";
+                  WHERE categories.id = $categoryId AND published != 0";
         $res = $pdo->query($query);
 
         while($article = $res->fetch()) {
