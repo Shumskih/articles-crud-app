@@ -1,78 +1,34 @@
 <?php
-include '../helpers/connectToDB.php';
-
-$headTitle = '';
-$categoriesArr = [];
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
+require_once ROOT . '/helpers/connectToDB.php';
+require_once ROOT . '/dao/CategoryDao.php';
+require_once ROOT . '/dao/ArticleDao.php';
 
 session_start();
 
+if (isset($_POST['delete'])) {
+  $categoryId = $_POST['id'];
+
+  CategoryDao::deleteCategory($pdo, $categoryId);
+  header('Location: /categories');
+}
+
 if (!isset($_GET['id'])) {
-    $headTitle = 'Категории';
+  $headTitle = 'Категории';
 
-    try {
-        $query = 'SELECT id, name FROM categories ORDER BY name';
-        $categories = $pdo->query($query);
+  $categories = CategoryDao::getAllCategories($pdo);
 
-        while($cat = $categories->fetch())
-            array_push($categoriesArr, [
-              'id' => $cat['id'],
-              'name' => $cat['name']
-            ]);
-    } catch (PDOException $e) {
-        echo 'Ошибка извлечения категорий из базы данных<br>' . $e->getMessage();
-    }
-
-    include '../views/categories/index.html.php';
+  include ROOT . '/views/categories/index.html.php';
 }
 
-if(isset($_GET['id'])) {
-    $categoryId = $_GET['id'];
-    $articlesArr = [];
+if (isset($_GET['id'])) {
+  $categoryId = $_GET['id'];
 
-    try {
-        $query = "SELECT articles.id, title, short_desc, published FROM articles
-                  LEFT JOIN categories_articles on articles.id = categories_articles.article_id
-                  LEFT JOIN categories on categories_articles.category_id = categories.id
-                  WHERE categories.id = $categoryId AND published != 0";
-        $res = $pdo->query($query);
+  $articles = ArticleDao::getArticlesByCategory($pdo, $categoryId);
 
-        while($article = $res->fetch()) {
-            array_push($articlesArr, [
-              'id' => $article['id'],
-              'title' => $article['title'],
-              'short_desc' => $article['short_desc']
-            ]);
-        }
-    } catch (PDOException $e) {
-        $e->getMessage();
-    }
+  $category = CategoryDao::getCategory($pdo, $categoryId);
 
-    try {
-        $query = 'SELECT id, name FROM categories WHERE id = :id';
-        $category = $pdo->prepare($query);
-        $category->execute(['id' => $categoryId]);
-        $res = $category->fetch();
+  $categoryName = $category['name'];
 
-        $headTitle = $res['name'];
-    } catch (PDOException $e) {
-        echo 'Ошибка извлечения категории из БД<br>' . $e->getMessage();
-    }
-
-    include '../views/categories/category.html.php';
-}
-
-if(isset($_POST['delete'])) {
-    try {
-        $queryCatsArticles = 'DELETE FROM categories_articles WHERE category_id = :id';
-        $res = $pdo->prepare($queryCatsArticles);
-        $res->execute(['id' => $_POST['id']]);
-
-        $query = 'DELETE FROM categories WHERE id = :id';
-        $category = $pdo->prepare($query);
-        $category->execute(['id' => $_POST['id']]);
-
-        header('Location: /categories');
-    } catch (PDOException $e) {
-        echo 'Ошибка удаления категории<br>' . $e->getMessage();
-    }
+  include ROOT . '/views/categories/category.html.php';
 }

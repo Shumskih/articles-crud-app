@@ -1,25 +1,17 @@
 <?php
-
-include $_SERVER['DOCUMENT_ROOT'] . '/helpers/connectToDB.php';
-include $_SERVER['DOCUMENT_ROOT'] . '/helpers/access.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
+require_once ROOT . '/helpers/connectToDB.php';
+require_once ROOT . '/helpers/access.php';
+require_once ROOT . '/helpers/Helper.php';
 
 session_start();
 
 if (isset($_GET['logout']) && isset($_SESSION['loggedIn'])) {
-    $headTitle = 'Возвращайтесь ещё!';
+  $headTitle = 'Возвращайтесь ещё!';
 
-    $_SESSION = array();
-    if (ini_get("session.use_cookies")) {
-        $params = session_get_cookie_params();
-        setcookie(session_name(), '', time() - 42000,
-          $params["path"], $params["domain"],
-          $params["secure"], $params["httponly"]
-        );
-    }
+  Helper::deleteSession();
 
-    session_destroy();
-
-    include $_SERVER['DOCUMENT_ROOT'] . '/views/logout/logout.html.php';
+  include ROOT . '/views/logout/logout.html.php';
 } else {
-    header('Location: /');
+  header('Location: /');
 }

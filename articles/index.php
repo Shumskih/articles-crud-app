@@ -11,7 +11,7 @@ $headTitle = '';
 session_start();
 
 if(isset($_GET['id'])) {
-  $article = ArticleDao::getArticle($pdo);
+  $article = ArticleDao::getArticleWithUser($pdo);
 
   $headTitle = $article['title'];
 

@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
-<?php include '../../views/partials/head.inc.php' ?>
+<?php include ROOT . '/views/partials/head.inc.php' ?>
 <body>
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/views/partials/nav.inc.php' ?>
+<?php include ROOT . '/views/partials/nav.inc.php' ?>
 
 <div class="container">
     <h1 class="text-center mt-5 mb-5"><?php echo $headTitle ?></h1>
@@ -18,11 +18,19 @@
         <div class="form-group">
             <textarea name="body" id="body" rows="10" class="form-control" required><?php echo $body ?></textarea>
         </div>
+        <div class="form-group">
+            <div class="input-group ml-n2 col-lg-7">
+                <div class="custom-file">
+                    <input type="file" name="file" class="custom-file-input" id="file">
+                    <label class="custom-file-label" for="file">Загрузите изображение</label>
+                </div>
+            </div>
+        </div>
         <input type="submit" name="submit" value="Изменить" class="btn btn-outline-primary">
         <a href="/articles?id=<?php echo $articleId ?>" class="btn btn-outline-warning">Отменить</a>
     </form>
 </div>
 </body>
 <!--scripts-->
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/views/partials/scripts.ink.php' ?>
+<?php include ROOT . '/views/partials/scripts.ink.php' ?>
 </html>

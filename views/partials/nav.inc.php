@@ -18,7 +18,8 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Категории</a>
                         <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 50px, 0px); top: 0px; left: 0px; will-change: transform;">
-
+                          <a class="dropdown-item" href="/categories">All Categories</a>
+                          <div class="dropdown-divider"></div>
                             <?php foreach ($categories as $category): ?>
                                 <a class="dropdown-item" href="/categories?id=<?php echo $category['id'] ?>"><?php echo $category['name'] ?></a>
                                 <div class="dropdown-divider"></div>

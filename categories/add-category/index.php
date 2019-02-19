@@ -1,39 +1,23 @@
 <?php
-include '../../helpers/connectToDB.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
+require_once ROOT . '/helpers/connectToDB.php';
+require_once ROOT . '/dao/CategoryDao.php';
 
 $headTitle = 'Добавить категорию';
-global $success;
-$unsuccess = '';
 
 session_start();
 
 if (isset($_SESSION['site_administrator'])) {
-    if(isset($_POST['submit'])) {
+  if (isset($_POST['submit'])) {
+    $categoryName = $_POST['name'];
 
-        try {
-            $name = $_POST['name'];
-
-            $query = "INSERT INTO categories VALUES (null, :name)";
-            $category = $pdo->prepare($query);
-            $isInsert = $category->execute([
-              'name' => $name
-            ]);
-
-            if($isInsert)
-                $success = 'Категория добавлена';
-
-            header('Location: /categories');
-        } catch (PDOException $e) {
-            $unsuccess = 'Ошибка! Статья не добавлена!<br>' . $e->getMessage();
-
-            header('Location: /categories/add-category');
-        }
-
-    } else {
-        include '../../views/categories/addCategory.html.php';
-    }
+    CategoryDao::addCategory($pdo, $categoryName);
+    header('Location: /categories');
+  } else {
+    include ROOT . '/views/categories/addCategory.html.php';
+  }
 } else {
-    include $_SERVER['DOCUMENT_ROOT'] . '/views/denied/index.html.php';
+  include ROOT . '/views/denied/index.html.php';
 }
 
 

@@ -9,8 +9,6 @@
 <div class="container">
     <div class="row justify-content-center mt-5">
         <div class="col-lg-7">
-
-
             <p>Статья отправлена на модерацию, ожидайте решения.</p>
             <a href="/articles/add-article">Отправить новую статью.</a>
         </div>

@@ -1,75 +1,38 @@
 <?php
-include $_SERVER['DOCUMENT_ROOT'] . '/helpers/connectToDB.php';
-include $_SERVER['DOCUMENT_ROOT'] . '/helpers/monthsInRussian.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
+require_once ROOT . '/helpers/connectToDB.php';
+require_once ROOT . '/helpers/monthsInRussian.php';
+require_once ROOT . '/dao/ArticleDao.php';
+require_once ROOT . '/dao/MessageDao.php';
 
-$res = [];
+$res       = [];
 $headTitle = '';
 
 session_start();
 
 if (isset($_POST['publish'])) {
-    $articleId = $_POST['id'];
+  $articleId = $_POST['id'];
+  ArticleDao::publishArticle($pdo, $articleId);
 
-    try {
-        $query = 'UPDATE articles SET published = 1, returned = 0, moderate = 0 WHERE id = :articleId';
-        $doQuery = $pdo->prepare($query);
-        $doQuery->execute([
-          'articleId' => $articleId
-        ]);
-    } catch (PDOException $e) {
-        $e->getMessage();
-    }
-
-    header('Location: /');
+  header('Location: /');
 }
 
 if (isset($_GET['id']) && !isset($_POST['message']) && !isset($_POST['publish'])) {
-    try {
-        $query = 'SELECT id, title, body, datetime FROM articles WHERE id = :id';
-        $article = $pdo->prepare($query);
-        $article->execute(['id' => $_GET['id']]);
-        $res = $article->fetch();
+  $article = ArticleDao::getArticle($pdo);
 
-        $headTitle = $res['title'];
+  $headTitle = $article['title'];
 
-        // Convert english months to russian months
-        $date = convertEngDateToRussian(strtotime($res['datetime']));
-    } catch (PDOException $e) {
-        echo 'Ошибка извлечения статьи из БД<br>' . $e->getMessage();
-    }
+  // Convert english months to russian months
+  $date = convertEngDateToRussian(strtotime($article['datetime']));
 
-    include $_SERVER['DOCUMENT_ROOT'] . '/views/articles/moderate/article.html.php';
+  include ROOT . '/views/articles/moderate/article.html.php';
 }
 
 if (isset($_POST['message'])) {
-    $articleId = $_POST['id'];
-    $message = $_POST['messageBody'];
+  $articleId = $_POST['id'];
+  $message   = $_POST['messageBody'];
+  $headTitle = 'Сообщение отправлено!';
 
-    try {
-        $query = 'INSERT INTO messages VALUES (NULL, :message)';
-        $doQuery = $pdo->prepare($query);
-        $doQuery->execute([
-          'message' => $message
-        ]);
-
-        $messageId = $pdo->lastInsertId();
-
-        $query = 'INSERT INTO articles_messages VALUES (:articleId, :messageId)';
-        $doQuery = $pdo->prepare($query);
-        $doQuery->execute([
-          'articleId' => $articleId,
-          'messageId' => $messageId
-        ]);
-
-        $query = 'UPDATE articles SET returned = 1, moderate = 0 WHERE id = :articleId';
-        $doQuery = $pdo->prepare($query);
-        $doQuery->execute([
-          'articleId' => $articleId
-        ]);
-    } catch (PDOException $e) {
-        $e->getMessage();
-    }
-
-    $headTitle = 'Сообщение отправлено!';
-    include $_SERVER['DOCUMENT_ROOT'] . '/views/articles/moderate/success/success.html.php';
+  MessageDao::sendMessage($pdo, $message, $articleId);
+  include ROOT . '/views/articles/moderate/success/success.html.php';
 }

@@ -1,5 +1,4 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/dao/CategoryDao.php';
 
-$query = 'SELECT * FROM categories ORDER BY name';
-$doQuery = $pdo->query($query);
-$categories = $doQuery->fetchAll();
+$categories = CategoryDao::getAllCategories($pdo);
