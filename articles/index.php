@@ -26,7 +26,8 @@ if(isset($_GET['id'])) {
 }
 
 if(isset($_POST['delete'])) {
-  ArticleDao::deleteArticle($pdo);
+  $articleId = $_POST['id'];
 
+  ArticleDao::deleteArticle($pdo, $articleId);
   header('Location: /');
 }

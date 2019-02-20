@@ -49,6 +49,8 @@ const UNBOUND_ARTICLE_FROM_CATEGORY = 'DELETE from categories_articles
 const UNBOUND_ARTICLE_FROM_USER = 'DELETE from users_articles 
                                    WHERE article_id = :id';
 
+const UNBOUND_ARTICLE_FROM_MESSAGE = 'DELETE FROM articles_messages WHERE article_id = :articleId';
+
 const INSERT_ARTICLE_PUBLISHED = 'INSERT INTO articles 
                                   VALUES (null, :title, :short_desc, :body, :img, now(), null, true, false, false, null)';
 
@@ -120,3 +122,10 @@ const GET_MESSAGE_BOUNDED_TO_ARTICLE = 'SELECT message, articles.id, title, shor
                      INNER JOIN articles_messages on articles_messages.message_id = messages.id
                      INNER JOIN articles on articles_messages.article_id = articles.id
                      WHERE articles.id = :articleId';
+
+const INSERT_NEW_USER = 'INSERT INTO users 
+                         VALUES (null, :name, :email, :password)';
+
+// roles
+const SET_ROLE_WRITER = 'INSERT INTO users_roles 
+                         VALUES (:userId, :roleId)';

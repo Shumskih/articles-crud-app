@@ -26,29 +26,6 @@ if (isset($_GET['articleId']) && isset($_SESSION['loggedIn'])
 if (isset($_POST['delete'])) {
   $articleId = $_POST['id'];
 
-  $query   = 'DELETE FROM categories_articles WHERE article_id = :articleId';
-  $doQuery = $pdo->prepare($query);
-  $doQuery->execute([
-    'articleId' => $articleId,
-  ]);
-
-  $query   = 'DELETE FROM users_articles WHERE article_id = :articleId';
-  $doQuery = $pdo->prepare($query);
-  $doQuery->execute([
-    'articleId' => $articleId,
-  ]);
-
-  $query   = 'DELETE FROM articles_messages WHERE article_id = :articleId';
-  $doQuery = $pdo->prepare($query);
-  $doQuery->execute([
-    'articleId' => $articleId,
-  ]);
-
-  $query   = 'DELETE FROM articles WHERE id = :articleId';
-  $doQuery = $pdo->prepare($query);
-  $doQuery->execute([
-    'articleId' => $articleId,
-  ]);
-
+  ArticleDao::deleteArticleWithMessage($pdo, $articleId);
   header('Location: /messages');
 }

@@ -108,10 +108,10 @@ class ArticleDao
     self::boundArticleToUser($pdo, $userId, $articleId);
   }
 
-  public static function deleteArticle(PDO $pdo)
+  public static function deleteArticle(PDO $pdo, $articleId)
   {
-    self::unboundArticleFromCategory($pdo);
-    self::unboundArticleFromUser($pdo);
+    self::unboundArticleFromCategory($pdo, $articleId);
+    self::unboundArticleFromUser($pdo, $articleId);
     try {
       $query   = DELETE_ARTICLE;
       $article = $pdo->prepare($query);
@@ -157,13 +157,13 @@ class ArticleDao
     }
   }
 
-  public static function unboundArticleFromCategory(PDO $pdo)
+  public static function unboundArticleFromCategory(PDO $pdo, $articleId)
   {
     try {
       $query   = UNBOUND_ARTICLE_FROM_CATEGORY;
       $article = $pdo->prepare($query);
       $article->execute([
-        'id' => $_POST['id'],
+        'id' => $articleId,
       ]);
 
       return true;
@@ -173,13 +173,13 @@ class ArticleDao
     }
   }
 
-  public static function unboundArticleFromUser(PDO $pdo)
+  public static function unboundArticleFromUser(PDO $pdo, $articleId)
   {
     try {
       $query   = UNBOUND_ARTICLE_FROM_USER;
       $article = $pdo->prepare($query);
       $article->execute([
-        'id' => $_POST['id'],
+        'id' => $articleId,
       ]);
 
       return true;
@@ -288,6 +288,25 @@ class ArticleDao
       return $doQuery->fetchAll();
     } catch (PDOException $e) {
       echo 'Can\'t get returned articles from database!<br>' . $e->getMessage();
+    }
+  }
+
+  public static function deleteArticleWithMessage(PDO $pdo, $articleId)
+  {
+    self::unboundArticleFromMessage($pdo, $articleId);
+    self::deleteArticle($pdo, $articleId);
+  }
+
+  public static function unboundArticleFromMessage(PDO $pdo, $articleId)
+  {
+    try {
+      $query   = UNBOUND_ARTICLE_FROM_MESSAGE;
+      $doQuery = $pdo->prepare($query);
+      $doQuery->execute([
+        'articleId' => $articleId,
+      ]);
+    } catch (PDOException $e) {
+      echo 'Can\'t unbound article from message!<br>' . $e->getMessage();
     }
   }
 }
