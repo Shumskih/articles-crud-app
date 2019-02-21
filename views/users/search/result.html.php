@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/views/partials/head.inc.php' ?>
-
+<?php require_once ROOT . '/views/partials/head.inc.php' ?>
 <body>
-<?php include  $_SERVER['DOCUMENT_ROOT'] . '/views/partials/nav.inc.php' ?>
-
+<?php require_once ROOT . '/views/partials/nav.inc.php' ?>
 <div class="container">
     <h1 class="text-center mt-5 mb-5">
         <?php echo $headTitle ?>
@@ -49,20 +46,20 @@
         </tr>
         </thead>
         <tbody>
-        <?php foreach ($searchResults as $user): ?>
+        <?php foreach ($user as $u): ?>
             <tr>
-                <th scope="row"><?php echo $user['id'] ?>
+                <th scope="row"><?php echo $u['id'] ?>
                 </th>
                 <td>
-                    <?php echo $user['name'] ?>
+                    <?php echo $u['name'] ?>
                 </td>
                 <td>
-                    <?php echo $user['email'] ?>
+                    <?php echo $u['email'] ?>
                 </td>
                 <td>
                     <?php foreach ($roles as $k => $v): ?>
                         <?php foreach ($v as $a => $b): ?>
-                            <?php if ($a == $user['id']): ?>
+                            <?php if ($a == $u['id']): ?>
                                 <span class="badge badge-secondary" data-toggle="tooltip" data-placement="top" title="<?php echo $b['roleDescription'] ?>">
                                         <?php echo $b['roleName']; ?>
                                     </span>
@@ -72,8 +69,8 @@
                 </td>
 
                 <td>
-                    <a href="/users/edit-user?id=<?php echo $user['id'] ?>" class="btn btn-outline-warning">Edit</a>
-                    <a href="/users/delete-user?id=<?php echo $user['id'] ?>" class="btn btn-outline-danger">Delete</a>
+                    <a href="/users/edit-user?id=<?php echo $u['id'] ?>" class="btn btn-outline-warning">Edit</a>
+                    <a href="/users/delete-user?id=<?php echo $u['id'] ?>" class="btn btn-outline-danger">Delete</a>
                 </td>
             </tr>
         <?php endforeach; ?>
@@ -82,7 +79,7 @@
 </div>
 </body>
 <!--scripts-->
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/views/partials/scripts.ink.php' ?>
+<?php require_once ROOT . '/views/partials/scripts.ink.php' ?>
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()

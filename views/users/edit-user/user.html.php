@@ -1,26 +1,22 @@
 <!doctype html>
 <html lang="en">
-
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/views/partials/head.inc.php' ?>
-
+<?php require_once ROOT . '/views/partials/head.inc.php' ?>
 <body>
-
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/views/partials/nav.inc.php' ?>
-
+<?php require_once ROOT . '/views/partials/nav.inc.php' ?>
 <div class="container">
     <h1 class="text-center mt-5 mb-5">
         <?php echo $headTitle ?>
         <hr>
     </h1>
     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="POST">
-        <input type="hidden" name="id" value="<?php echo $result['id'] ?>">
+        <input type="hidden" name="id" value="<?php echo $user['id'] ?>">
         <div class="form-group">
-            <input type="text" name="name" class="form-control" value="<?php echo $result['name'] ?>" required>
+            <input type="text" name="name" class="form-control" value="<?php echo $user['name'] ?>" required>
         </div>
         <div class="form-group row">
             <label for="staticEmail" class="col-sm-2 col-form-label">Email:</label>
             <div class="col-sm-10">
-                <input type="text" name="email" readonly="" class="form-control-plaintext" value="<?php echo $result['email'] ?>">
+                <input type="text" name="email" readonly="" class="form-control-plaintext" value="<?php echo $user['email'] ?>">
             </div>
         </div>
         <h5>Permissions</h5>
@@ -30,7 +26,7 @@
             <?php array_unshift($roleId, $role['roleId']); ?>
         <?php endforeach; ?>
         <div class="form-group">
-            <?php foreach ($allRoles as $role): ?>
+            <?php foreach ($roles as $role): ?>
                 <?php if (in_array($role['id'], $roleId)): ?>
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" name="permissions[<?php echo $role['id'] ?>]" id="<?php echo $role['id'] ?>" checked="checked" />
@@ -50,5 +46,5 @@
 </div>
 </body>
 <!--scripts-->
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/views/partials/scripts.ink.php' ?>
+<?php require_once ROOT . '/views/partials/scripts.ink.php' ?>
 </html>

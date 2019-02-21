@@ -1,20 +1,12 @@
 <?php
-
-include $_SERVER['DOCUMENT_ROOT'] . '/helpers/connectToDB.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
+require_once ROOT . '/helpers/connectToDB.php';
+require_once ROOT . '/dao/RoleDao.php';
 
 if (isset($_GET['deleteRole'])) {
     $userId = $_GET['id'];
     $roleId = $_POST['id'];
 
-    try {
-        $query = "DELETE FROM users_roles WHERE role_id = :roleId";
-        $ps = $pdo->prepare($query);
-        $ps->execute([
-          'roleId' => $roleId
-        ]);
-    } catch (PDOException $e) {
-        $e->getMessage();
-    }
-
+    RoleDao::unboundRoleFromUser($pdo, $roleId);
     header('Location: /users/edit-user?id=' . $userId);
 }

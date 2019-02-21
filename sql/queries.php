@@ -101,10 +101,19 @@ const UNBOUND_CATEGORY_FROM_ARTICLE = 'DELETE FROM categories_articles
                                        WHERE category_id = :id';
 
 // messages
+const GET_USERS = 'SELECT * FROM users';
+
+const GET_USERS_SORTED_BY_NAME = 'SELECT * FROM users ORDER BY name';
+
+const GET_USERS_SORTED_BY_EMAIL = 'SELECT * FROM users ORDER BY email';
+
 const SEND_MESSAGE = 'INSERT INTO messages 
                       VALUES (NULL, :message)';
 
 // users
+const GET_USER = 'SELECT * FROM users 
+                  WHERE id = :userId';
+
 const GET_USER_PERMISSIONS = 'SELECT roles.id, users.id as userId 
                               FROM roles
                               INNER JOIN users_roles on  users_roles.role_id = roles.id
@@ -126,6 +135,24 @@ const GET_MESSAGE_BOUNDED_TO_ARTICLE = 'SELECT message, articles.id, title, shor
 const INSERT_NEW_USER = 'INSERT INTO users 
                          VALUES (null, :name, :email, :password)';
 
+const SEARCH_USER_BY_NAME_AND_EMAIL = 'SELECT * FROM users WHERE name LIKE \%:name\% AND email LIKE \%:email\%';
+
+const GET_ROLES_OF_USER = 'SELECT users.id as userId, roles.name as roleName, roles.description as roleDescription 
+                           FROM users
+                           INNER JOIN users_roles on users.id = users_roles.user_id
+                           INNER JOIN roles on roles.id = users_roles.role_id
+                           WHERE users.id = :userId';
+
+const UNBOUND_USER_FROM_ROLES = 'DELETE FROM users_roles 
+                                 WHERE user_id = :userId';
+
+const DELETE_USER = 'DELETE FROM users 
+                     WHERE id = :userId';
 // roles
+const GET_ROLES = 'SELECT * FROM roles';
+
 const SET_ROLE_WRITER = 'INSERT INTO users_roles 
                          VALUES (:userId, :roleId)';
+
+const UNBOUND_ROLE_FROM_USER = 'DELETE FROM users_roles 
+                                WHERE role_id = :roleId';

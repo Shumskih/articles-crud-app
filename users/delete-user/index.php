@@ -1,15 +1,11 @@
 <?php
-
-include $_SERVER['DOCUMENT_ROOT'] . '/helpers/connectToDB.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
+require_once ROOT . '/helpers/connectToDB.php';
+require_once ROOT . '/dao/UserDao.php';
 
 if ($_GET['id']) {
     $userId = $_GET['id'];
 
-    $query = "DELETE FROM users_roles WHERE user_id = $userId";
-    $doQuery = $pdo->query($query);
-
-    $query = "DELETE FROM users WHERE id = $userId";
-    $doQuery = $pdo->query($query);
-
+    UserDao::deleteUser($pdo, $userId);
     header('Location: /users');
 }
