@@ -10,13 +10,17 @@
     </h1>
 
     <div class="form-inline float-right has-danger">
-        <form action="<?php $_SERVER['PHP_SELF'] ?>" method="GET">
-            <input type="text" class="form-control <?php if (isset($message) && $message == 'error'): ?>is-invalid<?php endif; ?>" placeholder="Поиск пользователя">
-            <button type="submit" name="search" class="btn btn-outline-info">Поиск</button>
-            <?php if (isset($message) && $message == 'error'): ?>
-                <div class="invalid-feedback">Введена пустая строка</div>
-            <?php endif; ?>
-        </form>
+      <form action="<?php $_SERVER['PHP_SELF'] ?>" method="GET">
+        <input type="text" name="search"
+               class="form-control <?php if (isset($message)
+                                             && $message
+                                                == 'error'): ?>is-invalid<?php endif; ?>"
+               placeholder="Найти пользователя">
+        <button type="submit" class="btn btn-outline-info">Поиск</button>
+        <?php if (isset($message) && $message == 'error'): ?>
+          <div class="invalid-feedback">Введена пустая строка</div>
+        <?php endif; ?>
+      </form>
     </div>
 
 

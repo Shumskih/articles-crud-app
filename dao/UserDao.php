@@ -73,13 +73,13 @@ class UserDao
 
   public static function searchUserByNameAndEmail(PDO $pdo, $name, $email)
   {
+    $name = "%$name%";
+    $email = "%$email%";
     try {
       $query = SEARCH_USER_BY_NAME_AND_EMAIL;
       $doQuery = $pdo->prepare($query);
-      $doQuery->execute([
-        'name' => $name,
-        'email' => $email
-      ]);
+      $doQuery->execute([$name, $email]);
+
       return $doQuery->fetchAll();
     } catch (PDOException $e) {
       echo 'Can\'t search user!<br>' . $e->getMessage();
@@ -125,6 +125,36 @@ class UserDao
       return $doQuery->fetch();
     } catch (PDOException $e) {
       echo 'Can\'t get user!<br>' . $e->getMessage();
+    }
+  }
+
+  public static function updateUser(PDO $pdo, $userId, $userName)
+  {
+    try {
+      $query   = UPDATE_USER;
+      $doQuery      = $pdo->prepare($query);
+      $doQuery = $doQuery->execute([
+        'userId' => $userId,
+        'name'   => $userName,
+      ]);
+    } catch (PDOException $e) {
+      echo 'Can\'t update user!<br>' . $e->getMessage();
+    }
+  }
+
+  public static function boundRoleToUser(PDO $pdo, $userId, array $permissions)
+  {
+    foreach ($permissions as $k => $v) {
+      try {
+        $query   = BOUND_ROLES_TO_USER;
+        $doQuery = $pdo->prepare($query);
+        $doQuery->execute([
+          'userId' => $userId,
+          'roleId' => $k
+        ]);
+      } catch (PDOException $e) {
+        echo 'Can\'t bound role to user!<br>' . $e->getMessage();
+      }
     }
   }
 }

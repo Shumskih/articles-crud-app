@@ -7,8 +7,8 @@ class RoleDao
   public static function getRoles(PDO $pdo)
   {
     try {
-      $query    = GET_ROLES;
-      $doQuery  = $pdo->query($query);
+      $query   = GET_ROLES;
+      $doQuery = $pdo->query($query);
       return $doQuery->fetchAll();
     } catch (PDOException $e) {
       echo 'Can\'t get roles!<br>' . $e->getMessage();
@@ -29,28 +29,11 @@ class RoleDao
     }
   }
 
-  public static function getRolesOfUser(PDO $pdo, $user)
+  public static function getRolesOfUsers(PDO $pdo, $user)
   {
     $roles = [];
-    if (is_array($user)) {
-      foreach ($user as $u) {
-        $userId  = $u['id'];
-        $query   = GET_ROLES_OF_USER;
-        $doQuery = $pdo->prepare($query);
-        $doQuery->execute([
-          'userId' => $userId,
-        ]);
-        while ($r = $doQuery->fetch()) {
-          array_unshift($roles, [
-            $r['userId'] => [
-              'roleName'        => $r['roleName'],
-              'roleDescription' => $r['roleDescription'],
-            ],
-          ]);
-        }
-      }
-    } else {
-      $userId = $user['id'];
+    foreach ($user as $u) {
+      $userId  = $u['id'];
       $query   = GET_ROLES_OF_USER;
       $doQuery = $pdo->prepare($query);
       $doQuery->execute([
@@ -66,6 +49,18 @@ class RoleDao
       }
     }
     return $roles;
+  }
+
+  public static function getRolesOfUser(PDO $pdo, $user)
+  {
+    $userId  = $user['id'];
+    $query        = GET_ROLES_OF_USER;
+    $doQuery      = $pdo->prepare($query);
+    $doQuery->execute([
+      'userId' => $userId
+    ]);
+
+    return $doQuery->fetchAll();
   }
 
   public static function unboundRoleFromUser(PDO $pdo, $roleId)

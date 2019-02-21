@@ -135,9 +135,11 @@ const GET_MESSAGE_BOUNDED_TO_ARTICLE = 'SELECT message, articles.id, title, shor
 const INSERT_NEW_USER = 'INSERT INTO users 
                          VALUES (null, :name, :email, :password)';
 
-const SEARCH_USER_BY_NAME_AND_EMAIL = 'SELECT * FROM users WHERE name LIKE \%:name\% AND email LIKE \%:email\%';
+const SEARCH_USER_BY_NAME_AND_EMAIL = 'SELECT * FROM users 
+                                       WHERE name LIKE ? 
+                                       AND email LIKE ?';
 
-const GET_ROLES_OF_USER = 'SELECT users.id as userId, roles.name as roleName, roles.description as roleDescription 
+const GET_ROLES_OF_USER = 'SELECT users.id as userId, roles.id as roleId, roles.name as roleName, roles.description as roleDescription 
                            FROM users
                            INNER JOIN users_roles on users.id = users_roles.user_id
                            INNER JOIN roles on roles.id = users_roles.role_id
@@ -146,8 +148,13 @@ const GET_ROLES_OF_USER = 'SELECT users.id as userId, roles.name as roleName, ro
 const UNBOUND_USER_FROM_ROLES = 'DELETE FROM users_roles 
                                  WHERE user_id = :userId';
 
+const BOUND_ROLES_TO_USER = 'INSERT INTO users_roles (user_id, role_id) VALUES (:userId, :roleId)';
+
 const DELETE_USER = 'DELETE FROM users 
                      WHERE id = :userId';
+
+const UPDATE_USER = 'UPDATE users SET name = :name WHERE id = :userId';
+
 // roles
 const GET_ROLES = 'SELECT * FROM roles';
 

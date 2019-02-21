@@ -13,7 +13,7 @@ if (isset($_GET['search']) && $_GET['search'] !== '') {
 
   $user = UserDao::searchUserByNameAndEmail($pdo, $name, $email);
 
-  $roles = RoleDao::getRolesOfUser($pdo, $user);
+  $roles = RoleDao::getRolesOfUsers($pdo, $user);
 
   $arrow = 'id';
   include ROOT . '/views/users/search/result.html.php';
@@ -28,7 +28,7 @@ if (!isset($_SESSION['account_administrator'])) {
            && $_GET['search'] == '')) {
   $users = UserDao::getUsers($pdo);
 
-  $roles = RoleDao::getRolesOfUser($pdo, $users);
+  $roles = RoleDao::getRolesOfUsers($pdo, $users);
 
   $arrow = 'id';
   include ROOT . '/views/users/users.html.php';
