@@ -9,7 +9,7 @@ session_start();
 
 if (isset($_SESSION['site_administrator'])) {
   if (isset($_POST['submit'])) {
-    $categoryName = $_POST['name'];
+    $categoryName = htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8');
 
     CategoryDao::addCategory($pdo, $categoryName);
     header('Location: /categories');

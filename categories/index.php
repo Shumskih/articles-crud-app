@@ -7,7 +7,7 @@ require_once ROOT . '/dao/ArticleDao.php';
 session_start();
 
 if (isset($_POST['delete'])) {
-  $categoryId = $_POST['id'];
+  $categoryId = intval($_POST['id']);
 
   CategoryDao::deleteCategory($pdo, $categoryId);
   header('Location: /categories');
@@ -22,7 +22,7 @@ if (!isset($_GET['id'])) {
 }
 
 if (isset($_GET['id'])) {
-  $categoryId = $_GET['id'];
+  $categoryId = intval($_GET['id']);
 
   $articles = ArticleDao::getArticlesByCategory($pdo, $categoryId);
 

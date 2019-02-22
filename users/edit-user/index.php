@@ -7,8 +7,8 @@ require_once ROOT . '/dao/RoleDao.php';
 session_start();
 $headTitle = 'Редактировать данные пользователя:';
 if (isset($_POST['edit'])) {
-  $userId      = $_POST['id'];
-  $name        = $_POST['name'];
+  $userId      = intval($_POST['id']);
+  $name        = htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8');
   $permissions = $_POST['permissions'];
 
   UserDao::unboundUserFromRoles($pdo, $userId);
@@ -20,7 +20,7 @@ if (isset($_POST['edit'])) {
   header('Location: /users');
 }
 if (isset($_GET['id'])) {
-  $userId = $_GET['id'];
+  $userId = intval($_GET['id']);
   $user   = UserDao::getUser($pdo, $userId);
 
   $userHasRoles = [];

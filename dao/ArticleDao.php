@@ -15,12 +15,12 @@ class ArticleDao
     }
   }
 
-  public static function getArticle(PDO $pdo)
+  public static function getArticle(PDO $pdo, $articleId)
   {
     try {
       $query   = GET_ARTICLE;
       $article = $pdo->prepare($query);
-      $article->execute(['id' => $_GET['id']]);
+      $article->execute(['id' => $articleId]);
 
       return $article->fetch();
     } catch (PDOException $e) {
@@ -28,12 +28,12 @@ class ArticleDao
     }
   }
 
-  public static function getArticleWithUser(PDO $pdo)
+  public static function getArticleWithUser(PDO $pdo, $articleId)
   {
     try {
       $query   = GET_ARTICLE_AND_BOUNDED_USER;
       $article = $pdo->prepare($query);
-      $article->execute(['id' => $_GET['id']]);
+      $article->execute(['id' => $articleId]);
 
       return $article->fetch();
     } catch (PDOException $e) {

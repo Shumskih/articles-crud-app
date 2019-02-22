@@ -5,13 +5,13 @@ require ROOT . '/helpers/monthsInRussian.php';
 require ROOT . '/sql/queries.php';
 require ROOT . '/dao/ArticleDao.php';
 
-$res = [];
 $headTitle = '';
 
 session_start();
 
 if(isset($_GET['id'])) {
-  $article = ArticleDao::getArticleWithUser($pdo);
+  $articleId = intval($_GET['id']);
+  $article = ArticleDao::getArticleWithUser($pdo, $articleId);
 
   $headTitle = $article['title'];
 
@@ -26,7 +26,7 @@ if(isset($_GET['id'])) {
 }
 
 if(isset($_POST['delete'])) {
-  $articleId = $_POST['id'];
+  $articleId = intval($_POST['id']);
 
   ArticleDao::deleteArticle($pdo, $articleId);
   header('Location: /');

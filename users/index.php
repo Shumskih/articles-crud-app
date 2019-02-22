@@ -9,7 +9,7 @@ session_start();
 $headTitle = 'Пользователи';
 
 if (isset($_GET['search']) && $_GET['search'] !== '') {
-  $name = $email = $_GET['search'];
+  $name = $email = htmlspecialchars($_GET['search'], ENT_QUOTES, 'UTF-8');
 
   $user = UserDao::searchUserByNameAndEmail($pdo, $name, $email);
 
@@ -40,7 +40,7 @@ if (isset($_SESSION['account_administrator']) && isset($_GET['sort-by'])
 
   $users = UserDao::getUsersSortedByName($pdo);
 
-  $roles = RoleDao::getRolesOfUser($pdo, $users);
+  $roles = RoleDao::getRolesOfUsers($pdo, $users);
 
   $arrow = 'name';
   include ROOT . '/views/users/users.html.php';
@@ -52,7 +52,7 @@ if (isset($_SESSION['account_administrator']) && isset($_GET['sort-by'])
 
   $users = UserDao::getUsersSortedByEmail($pdo);
 
-  $roles = RoleDao::getRolesOfUser($pdo, $users);
+  $roles = RoleDao::getRolesOfUsers($pdo, $users);
 
   $arrow = 'email';
   include ROOT . '/views/users/users.html.php';

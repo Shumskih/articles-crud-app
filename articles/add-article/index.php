@@ -12,15 +12,15 @@ session_start();
 if (isset($_SESSION['editor']) or isset($_SESSION['writer'])) {
     if(isset($_POST['submit'])) {
       // article
-      $title = $_POST['title'];
-      $short_desc = $_POST['short_desc'];
-      $body = $_POST['body'];
+      $title = htmlspecialchars($_POST['title'], ENT_QUOTES, 'UTF-8');
+      $short_desc = htmlspecialchars($_POST['short_desc'], ENT_QUOTES, 'UTF-8');
+      $body = htmlspecialchars($_POST['body'], ENT_QUOTES, 'UTF-8');
 
       // id of category
-      $categoryId = $_POST['category'];
+      $categoryId = intval($_POST['category']);
 
       // id of user
-      $userId = $_SESSION['user_id'];
+      $userId = intval($_SESSION['user_id']);
 
       // file
       $data = $_FILES['file'];

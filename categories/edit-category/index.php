@@ -6,8 +6,8 @@ require_once ROOT . '/dao/CategoryDao.php';
 session_start();
 
 if (isset($_POST['submit'])) {
-  $categoryId   = $_POST['id'];
-  $categoryName = $_POST['name'];
+  $categoryId   = intval($_POST['id']);
+  $categoryName = htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8');
   $headTitle    = $categoryName;
 
   CategoryDao::updateCategory($pdo, $categoryId, $categoryName);
@@ -15,7 +15,7 @@ if (isset($_POST['submit'])) {
 }
 
 if (isset($_POST['cancel'])) {
-  $categoryId = $_POST['id'];
+  $categoryId = intval($_POST['id']);
 
   header('Location: /categories?id=' . $categoryId);
 }
@@ -25,7 +25,7 @@ if (isset($_GET['id']) && !isset($_SESSION['site_administrator'])) {
   include ROOT . '/views/denied/index.html.php';
 } else {
   $headTitle    = 'Изменить категорию';
-  $categoryId   = $_GET['id'];
+  $categoryId   = intval($_GET['id']);
   $category     = CategoryDao::getCategory($pdo, $categoryId);
   $categoryName = $category['name'];
 

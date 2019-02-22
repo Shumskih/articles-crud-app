@@ -16,16 +16,16 @@ if (isset($_POST['submit'])) {
     include ROOT . '/views/login/login.html.php';
   }
 
-  $email    = $_POST['email'];
-  $password = md5($_POST['password'] . 'php_and_mysql');
+  $email    = htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8');
+  $password = md5(
+    htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') . 'php_and_mysql'
+  );
 
   if ($name = databaseContainsUser($pdo, $email, $password)) {
     session_start();
 
-    $email                = $_POST['email'];
     $_SESSION['loggedIn'] = true;
     $_SESSION['email']    = $email;
-    $_SESSION['password'] = $password;
     $_SESSION['name']     = $name;
 
     $permissions = Helper::getPermissions($pdo, $email);

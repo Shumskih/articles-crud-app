@@ -17,21 +17,21 @@ if (isset($_POST['register'])) {
     include ROOT . '/views/registration/registration.html.php';
   }
 
-  $name     = $_POST['name'];
-  $email    = $_POST['email'];
-  $password = md5($_POST['password'] . 'php_and_mysql');
+  $name     = htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8');
+  $email    = htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8');
+  $password = md5(
+    htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') . 'php_and_mysql'
+  );
 
   if (!databaseContainsEmail($pdo, $email)) {
     $_SESSION['loggedIn'] = true;
     $_SESSION['name']     = $name;
     $_SESSION['email']    = $email;
-    $_SESSION['password'] = $password;
     $_SESSION['writer']   = true;
 
     $userId = UserDao::registerNewUser($pdo, $name, $email, $password);
-    $roleId = 4;
 
-    RoleDao::setRoleWriter($pdo, $userId, $roleId);
+    RoleDao::setRoleWriter($pdo, $userId, $roleId = 4);
 
     $redirectToMainPage = true;
     include ROOT . '/views/registration/success/success.html.php';
