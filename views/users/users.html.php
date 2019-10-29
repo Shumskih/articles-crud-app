@@ -6,7 +6,7 @@
 
 <div class="container">
   <h1 class="text-center mt-5">
-    <?php echo $headTitle ?>
+      <?php echo $headTitle ?>
     <hr>
   </h1>
 
@@ -18,9 +18,9 @@
                                               == 'error'): ?>is-invalid<?php endif; ?>"
              placeholder="Найти пользователя">
       <button type="submit" class="btn btn-outline-info">Поиск</button>
-      <?php if (isset($message) && $message == 'error'): ?>
-        <div class="invalid-feedback">Введена пустая строка</div>
-      <?php endif; ?>
+        <?php if (isset($message) && $message == 'error'): ?>
+          <div class="invalid-feedback">Введена пустая строка</div>
+        <?php endif; ?>
     </form>
   </div>
 
@@ -32,19 +32,19 @@
         <a href="/users">
           ID
         </a>
-        <?php if ($arrow == 'id'): ?>&uarr;<?php endif; ?>
+          <?php if ($arrow == 'id'): ?>&uarr;<?php endif; ?>
       </th>
       <th scope="col">
         <a href="/users?sort-by=name">
           Name
         </a>
-        <?php if ($arrow == 'name'): ?>&uarr;<?php endif; ?>
+          <?php if ($arrow == 'name'): ?>&uarr;<?php endif; ?>
       </th>
       <th scope="col">
         <a href="/users?sort-by=email">
           Email
         </a>
-        <?php if ($arrow == 'email'): ?>&uarr;<?php endif; ?>
+          <?php if ($arrow == 'email'): ?>&uarr;<?php endif; ?>
       </th>
       <th scope="col">Permissions</th>
       <th scope="col">Actions</th>
@@ -56,23 +56,23 @@
         <th scope="row"><?php echo $user['id'] ?>
         </th>
         <td>
-          <?php echo $user['name'] ?>
+            <?php echo $user['name'] ?>
         </td>
         <td>
-          <?php echo $user['email'] ?>
+            <?php echo $user['email'] ?>
         </td>
         <td>
-          <?php foreach ($roles as $k => $v): ?>
-            <?php foreach ($v as $a => $b): ?>
-              <?php if ($a == $user['id']): ?>
-                <span class="badge badge-secondary" data-toggle="tooltip"
-                      data-placement="top"
-                      title="<?php echo $b['roleDescription'] ?>">
+            <?php foreach ($roles as $k => $v): ?>
+                <?php foreach ($v as $a => $b): ?>
+                    <?php if ($a == $user['id']): ?>
+                  <span class="badge badge-secondary" data-toggle="tooltip"
+                        data-placement="top"
+                        title="<?php echo $b['roleDescription'] ?>">
                                         <?php echo $b['roleName']; ?>
                                     </span>
-              <?php endif; ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
             <?php endforeach; ?>
-          <?php endforeach; ?>
         </td>
 
         <td>

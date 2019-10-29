@@ -44,57 +44,57 @@ $relations = [
     2 => [3, 4],
     3 => [5, 6],
     4 => [7, 8],
-    5 => [9, 10]
-],
-  'usersRolesRelations' => [
-    1 => [1,2,3,4,5],
+    5 => [9, 10],
+  ],
+  'usersRolesRelations'         => [
+    1 => [1, 2, 3, 4, 5],
     2 => [3],
-    3 => [2]
-    ],
-  'usersArticlesRelations' => [
-    1 => [1,3,5],
-    2 => [2,4,6],
-    3 => [7,8,9,10]
-  ]
+    3 => [2],
+  ],
+  'usersArticlesRelations'      => [
+    1 => [1, 3, 5],
+    2 => [2, 4, 6],
+    3 => [7, 8, 9, 10],
+  ],
 ];
 
 $users = [
-  Array (
-    'name' =>     'Shumskih',
-    'email' =>    'shumskih@email.com',
-    'password' => '6457773'
-  ),
-  Array (
-    'name' =>     'Dimon',
-    'email' =>    'dimon@email.com',
-    'password' => 'password'
-  ),
-  Array(
-    'name' =>     'Siri',
-    'email' =>    'siri@apple.com',
-    'password' => '5555555'
-  )
+  [
+    'name'     => 'Shumskih',
+    'email'    => 'shumskih@email.com',
+    'password' => '6457773',
+  ],
+  [
+    'name'     => 'Dimon',
+    'email'    => 'dimon@email.com',
+    'password' => 'password',
+  ],
+  [
+    'name'     => 'Siri',
+    'email'    => 'siri@apple.com',
+    'password' => '5555555',
+  ],
 ];
 
 $roles = [
-  Array(
-    'name' => 'Editor',
-    'description' => 'Adding, deleting and editing articles'
-  ),
-  Array(
-    'name' => 'Account administrator',
-    'description' => 'Adding, deleting and editing users'
-  ),
-  Array(
-    'name' => 'Site administrator',
-    'description' => 'Adding, deleting and editing categories'
-  ),
-  Array (
-    'name' => 'Writer',
-    'description' => 'User can write and edit his own articles'
-  ),
-  Array (
-    'name' => 'Moderator',
-    'description' => 'Moderate articles. Approve or disapprove publication'
-  )
+  [
+    'name'        => 'Editor',
+    'description' => 'Adding, deleting and editing articles',
+  ],
+  [
+    'name'        => 'Account administrator',
+    'description' => 'Adding, deleting and editing users',
+  ],
+  [
+    'name'        => 'Site administrator',
+    'description' => 'Adding, deleting and editing categories',
+  ],
+  [
+    'name'        => 'Writer',
+    'description' => 'User can write and edit his own articles',
+  ],
+  [
+    'name'        => 'Moderator',
+    'description' => 'Moderate articles. Approve or disapprove publication',
+  ],
 ];

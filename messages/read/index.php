@@ -10,22 +10,22 @@ session_start();
 
 if (isset($_GET['articleId']) && isset($_SESSION['loggedIn'])
     && isset($_SESSION['writer'])) {
-  $articleId = $_GET['articleId'];
-  $userId = $_SESSION['user_id'];
+    $articleId = intval($_GET['articleId']);
+    $userId    = $_SESSION['user_id'];
 
-  $message = MessageDao::getMessageBoundedToArticle($pdo, $articleId);
-  $user = UserDao::getUserBoundedToArticle($pdo, $articleId);
+    $message = MessageDao::getMessageBoundedToArticle($pdo, $articleId);
+    $user    = UserDao::getUserBoundedToArticle($pdo, $articleId);
 
-  $headTitle = $message['title'];
+    $headTitle = $message['title'];
 
-  // Convert english months to russian months
-  $date = convertEngDateToRussian(strtotime($message['datetime']));
-  include ROOT . '/views/messages/read/read.html.php';
+    // Convert english months to russian months
+    $date = convertEngDateToRussian(strtotime($message['datetime']));
+    include ROOT . '/views/messages/read/read.html.php';
 }
 
 if (isset($_POST['delete'])) {
-  $articleId = $_POST['id'];
+    $articleId = intval($_POST['id']);
 
-  ArticleDao::deleteArticleWithMessage($pdo, $articleId);
-  header('Location: /messages');
+    ArticleDao::deleteArticleWithMessage($pdo, $articleId);
+    header('Location: /messages');
 }

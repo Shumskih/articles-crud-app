@@ -6,7 +6,7 @@
 
 <div class="container">
   <h1 class="text-center mt-5 mb-5">
-    <?php echo $headTitle ?>
+      <?php echo $headTitle ?>
     <hr>
   </h1>
   <form action="<?php $_SERVER['PHP_SELF'] ?>" method="POST">
@@ -22,24 +22,26 @@
     </div>
     <h5>Permissions</h5>
     <hr>
-    <?php $roleId = []; ?>
-    <?php foreach ($userHasRoles as $role): ?>
-      <?php array_unshift($roleId, $role['roleId']); ?>
-    <?php endforeach; ?>
+      <?php $roleId = []; ?>
+      <?php foreach ($userHasRoles as $role): ?>
+          <?php array_unshift($roleId, $role['roleId']); ?>
+      <?php endforeach; ?>
     <div class="form-group">
-      <?php foreach ($allRoles as $role): ?>
-        <?php if (in_array($role['id'], $roleId)): ?>
+        <?php foreach ($allRoles as $role): ?>
+            <?php if (in_array($role['id'], $roleId)): ?>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" name="permissions[<?php echo $role['id'] ?>]"
+                     id="<?php echo $role['id'] ?>" checked="checked"/>
+              <label class="custom-control-label" for="<?php echo $role['id'] ?>"><?php echo $role['name'] ?></label>
+            </div>
+                <?php continue; ?>
+            <?php endif; ?>
           <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" name="permissions[<?php echo $role['id'] ?>]" id="<?php echo $role['id'] ?>" checked="checked" />
+            <input type="checkbox" class="custom-control-input" name="permissions[<?php echo $role['id'] ?>]"
+                   id="<?php echo $role['id'] ?>"/>
             <label class="custom-control-label" for="<?php echo $role['id'] ?>"><?php echo $role['name'] ?></label>
           </div>
-          <?php continue; ?>
-        <?php endif; ?>
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" name="permissions[<?php echo $role['id'] ?>]" id="<?php echo $role['id'] ?>" />
-          <label class="custom-control-label" for="<?php echo $role['id'] ?>"><?php echo $role['name'] ?></label>
-        </div>
-      <?php endforeach; ?>
+        <?php endforeach; ?>
     </div>
     <input type="submit" name="edit" value="Изменить" class="btn btn-outline-primary">
     <a href="/users" class="btn btn-outline-warning">Отменить</a>

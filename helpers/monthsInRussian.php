@@ -1,6 +1,6 @@
 <?php
 
-$monthsList = array(
+$monthsList = [
   ".01." => "января",
   ".02." => "февраля",
   ".03." => "марта",
@@ -12,15 +12,16 @@ $monthsList = array(
   ".09." => "сентября",
   ".10." => "октября",
   ".11." => "ноября",
-  ".12." => "декабря"
-);
+  ".12." => "декабря",
+];
 
-function convertEngDateToRussian(string $date) {
+function convertEngDateToRussian(string $date)
+{
 
     global $monthsList;
 
     $date = date('j.m.Y H:i', $date);
-    $mD = date(".m.");
-    return $russianDate = str_replace($mD, " ".$monthsList[$mD]." ", $date);
+    $mD   = date(".m.");
+    return $russianDate = str_replace($mD, " " . $monthsList[$mD] . " ", $date);
 
 }

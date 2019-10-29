@@ -8,7 +8,7 @@ require ROOT . '/dao/ArticleDao.php';
 $articles = ArticleDao::getAllArticles($pdo);
 
 $headTitle = 'Список статей';
-$img = ROOT . "/uploads/images/";
+$img       = ROOT . "/uploads/images/";
 
 session_start();
 

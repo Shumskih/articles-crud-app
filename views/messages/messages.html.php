@@ -16,7 +16,7 @@
         <tr class="table-active">
           <th scope="row">
             <a href="/messages/read?articleId=<?php echo $article['id'] ?>">
-              <?php echo $article['title']; ?>
+                <?php echo $article['title']; ?>
             </a>
           </th>
         </tr>

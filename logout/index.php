@@ -7,11 +7,11 @@ require_once ROOT . '/helpers/Helper.php';
 session_start();
 
 if (isset($_GET['logout']) && isset($_SESSION['loggedIn'])) {
-  $headTitle = 'Возвращайтесь ещё!';
+    $headTitle = 'Возвращайтесь ещё!';
 
-  Helper::deleteSession();
+    Helper::deleteSession();
 
-  include ROOT . '/views/logout/logout.html.php';
+    include ROOT . '/views/logout/logout.html.php';
 } else {
-  header('Location: /');
+    header('Location: /');
 }

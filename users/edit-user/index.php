@@ -7,29 +7,29 @@ require_once ROOT . '/dao/RoleDao.php';
 session_start();
 $headTitle = 'Редактировать данные пользователя:';
 if (isset($_POST['edit'])) {
-  $userId      = intval($_POST['id']);
-  $name        = htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8');
-  $permissions = $_POST['permissions'];
+    $userId      = intval($_POST['id']);
+    $name        = htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8');
+    $permissions = $_POST['permissions'];
 
-  UserDao::unboundUserFromRoles($pdo, $userId);
+    UserDao::unboundUserFromRoles($pdo, $userId);
 
-  UserDao::updateUser($pdo, $userId, $name);
+    UserDao::updateUser($pdo, $userId, $name);
 
-  UserDao::boundRoleToUser($pdo, $userId, $permissions);
+    UserDao::boundRoleToUser($pdo, $userId, $permissions);
 
-  header('Location: /users');
+    header('Location: /users');
 }
 if (isset($_GET['id'])) {
-  $userId = intval($_GET['id']);
-  $user   = UserDao::getUser($pdo, $userId);
+    $userId = intval($_GET['id']);
+    $user   = UserDao::getUser($pdo, $userId);
 
-  $userHasRoles = [];
-  $userRoles    = RoleDao::getRolesOfUser($pdo, $user);
+    $userHasRoles = [];
+    $userRoles    = RoleDao::getRolesOfUser($pdo, $user);
 
-  foreach ($userRoles as $role) {
-    array_unshift($userHasRoles, $role);
-  }
+    foreach ($userRoles as $role) {
+        array_unshift($userHasRoles, $role);
+    }
 
-  $allRoles = RoleDao::getRoles($pdo);
-  include ROOT . '/views/users/edit-user/user.html.php';
+    $allRoles = RoleDao::getRoles($pdo);
+    include ROOT . '/views/users/edit-user/user.html.php';
 }

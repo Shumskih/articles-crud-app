@@ -7,7 +7,7 @@ require_once ROOT . '/dao/ArticleDao.php';
 $headTitle = 'Статьи на модерацию';
 
 $articles = ArticleDao::getAllArticlesForModerator($pdo);
-$img = ROOT . "/uploads/images/";
+$img      = ROOT . "/uploads/images/";
 
 session_start();
 

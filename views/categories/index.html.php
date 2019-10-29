@@ -6,18 +6,18 @@
 
 <div class="container">
 
-    <h1 class="text-center mt-5 mb-4"><?php echo $headTitle; ?></h1>
-    <hr class="hr">
+  <h1 class="text-center mt-5 mb-4"><?php echo $headTitle; ?></h1>
+  <hr class="hr">
 
     <?php foreach ($categories as $category): ?>
-        <div class="card">
-            <h4 class="card-header">
-                <a href="/categories?id=<?php echo $category['id'] ?>">
-                    <?php echo $category['name']; ?>
-                </a>
-            </h4>
-        </div>
-        <hr>
+      <div class="card">
+        <h4 class="card-header">
+          <a href="/categories?id=<?php echo $category['id'] ?>">
+              <?php echo $category['name']; ?>
+          </a>
+        </h4>
+      </div>
+      <hr>
     <?php endforeach; ?>
 </div>
 </body>

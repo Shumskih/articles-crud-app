@@ -1,8 +1,6 @@
 <?php
 
-//define('START_TIME', microtime(true));
-
-require 'autoload.php';
+require ROOT . '/helpers/autoload.php';
 
 function faker(PDO $pdo, array $tables, array $relations, array $users, array $roles)
 {
@@ -25,26 +23,33 @@ function faker(PDO $pdo, array $tables, array $relations, array $users, array $r
     foreach ($tables as $table => $columns) {
         createTable($pdo, $table, $columns);
 
-        if ($table == 'articles')
+        if ($table == 'articles') {
             populateArticles($pdo);
+        }
 
-        if ($table == 'categories')
+        if ($table == 'categories') {
             populateCategories($pdo);
+        }
 
-        if ($table == 'categories_articles')
+        if ($table == 'categories_articles') {
             populateCategoriesArticles($pdo, $relations);
+        }
 
-        if ($table == 'users')
+        if ($table == 'users') {
             populateUsers($pdo, $users);
+        }
 
-        if ($table == 'roles')
+        if ($table == 'roles') {
             populateRoles($pdo, $roles);
+        }
 
-        if ($table == 'users_roles')
+        if ($table == 'users_roles') {
             populateUsersRoles($pdo, $relations);
+        }
 
-        if ($table == 'users_articles')
+        if ($table == 'users_articles') {
             populateUsersArticles($pdo, $relations);
+        }
     }
 }
 
@@ -55,23 +60,25 @@ function populateArticles(PDO $pdo)
     for ($i = 0; $i < 10; $i++) {
 
         $articleTitle = $faker->sentence($nbWords = 6, $variableNbWords = true);
-        $shortDesc = $faker->sentence($nbWords = 20, $variableNbWords = true);
-        $bodyArr = $faker->paragraphs($nb = 5, $asText = false);
-        $body = '';
-        $img = '/uploads/images/1549124366.jpg';
+        $shortDesc    = $faker->sentence($nbWords = 20, $variableNbWords = true);
+        $bodyArr      = $faker->paragraphs($nb = 5, $asText = false);
+        $body         = '';
+        $img          = '/uploads/images/1549124366.jpg';
 
 
         foreach ($bodyArr as $b) {
             $body .= $b . "<br>";
         }
 
-        $query = 'INSERT INTO articles VALUES (null, :title, :short_desc, :body, :img, now(), null, true, false, false, null)';
+        $query
+                 = 'INSERT INTO articles VALUES (null, :title, :short_desc, :body, :img, now(), null, true, false, false)';
         $article = $pdo->prepare($query);
         $article->execute([
-          'title' => $articleTitle,
+          'title'      => $articleTitle,
           'short_desc' => $shortDesc,
-          'body' => $body,
-          'img' => $img]);
+          'body'       => $body,
+          'img'        => $img,
+        ]);
     }
 }
 
@@ -83,10 +90,10 @@ function populateCategories(PDO $pdo)
 
         $categoryName = $faker->sentence($nbWords = 1, $variableNbWords = true);
 
-        $query = 'INSERT INTO categories VALUES (null, :name)';
+        $query    = 'INSERT INTO categories VALUES (null, :name)';
         $category = $pdo->prepare($query);
         $category->execute([
-          'name' => $categoryName
+          'name' => $categoryName,
         ]);
     }
 }
@@ -125,15 +132,15 @@ function populateUsers(PDO $pdo, array $users)
 function populateRoles(PDO $pdo, array $roles)
 {
     foreach ($roles as $role) {
-        $name     = $role['name'];
-        $description    = $role['description'];
+        $name        = $role['name'];
+        $description = $role['description'];
 
         try {
             $query    = 'INSERT INTO roles VALUES (null, :name, :description)';
             $category = $pdo->prepare($query);
             $category->execute([
               'name'        => $name,
-              'description' => $description
+              'description' => $description,
             ]);
         } catch (PDOException $e) {
             $e->getMessage();
@@ -161,7 +168,7 @@ function populateUsersArticles(PDO $pdo, array $relations)
     }
 }
 
-function isTableExists(PDO $pdo, string $table) : bool
+function isTableExists(PDO $pdo, string $table): bool
 {
     try {
         $result = $pdo->query("SELECT * from $table LIMIT 1");
@@ -172,7 +179,7 @@ function isTableExists(PDO $pdo, string $table) : bool
     return $result !== false;
 }
 
-function dropTable(PDO $pdo, string $table) : bool
+function dropTable(PDO $pdo, string $table): bool
 {
     try {
         $result = $pdo->query("DROP TABLE IF EXISTS $table");
@@ -184,8 +191,9 @@ function dropTable(PDO $pdo, string $table) : bool
     return $result !== false;
 }
 
-function tablesList(PDO $pdo) {
-    $query = 'SHOW TABLES';
+function tablesList(PDO $pdo)
+{
+    $query  = 'SHOW TABLES';
     $tables = [];
 
     try {
@@ -201,7 +209,8 @@ function tablesList(PDO $pdo) {
     return $tables;
 }
 
-function createTable(PDO $pdo, string $table, string $columns) {
+function createTable(PDO $pdo, string $table, string $columns)
+{
     try {
         $query = "CREATE TABLE $table ($columns)";
         $pdo->query($query);
@@ -209,5 +218,3 @@ function createTable(PDO $pdo, string $table, string $columns) {
         echo "Не удалось создать таблицу $table<br>" . $e->getMessage();
     }
 }
-
-//echo printf("Время выполнения скрипта: %.5f c", microtime(true) - START_TIME);

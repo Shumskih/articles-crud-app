@@ -1,0 +1,8 @@
+{
+  "require-dev": {
+  },
+  "require": {
+    "squizlabs/php_codesniffer": "*",
+    "ext-pdo": "*"
+  }
+}

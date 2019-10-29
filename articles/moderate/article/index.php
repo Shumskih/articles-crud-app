@@ -10,30 +10,30 @@ $headTitle = '';
 session_start();
 
 if (isset($_POST['publish'])) {
-  $articleId = intval($_POST['id']);
-  ArticleDao::publishArticle($pdo, $articleId);
+    $articleId = intval($_POST['id']);
+    ArticleDao::publishArticle($pdo, $articleId);
 
-  header('Location: /');
+    header('Location: /');
 }
 
 if (isset($_GET['id']) && !isset($_POST['message'])
     && !isset($_POST['publish'])) {
-  $articleId = intval($_GET['id']);
-  $article = ArticleDao::getArticle($pdo, $articleId);
+    $articleId = intval($_GET['id']);
+    $article   = ArticleDao::getArticle($pdo, $articleId);
 
-  $headTitle = $article['title'];
+    $headTitle = $article['title'];
 
-  // Convert english months to russian months
-  $date = convertEngDateToRussian(strtotime($article['datetime']));
+    // Convert english months to russian months
+    $date = convertEngDateToRussian(strtotime($article['datetime']));
 
-  include ROOT . '/views/articles/moderate/article.html.php';
+    include ROOT . '/views/articles/moderate/article.html.php';
 }
 
 if (isset($_POST['message'])) {
-  $articleId = intval($_POST['id']);
-  $message   = htmlspecialchars($_POST['messageBody'], ENT_QUOTES, 'UTF-8');
-  $headTitle = 'Сообщение отправлено!';
+    $articleId = intval($_POST['id']);
+    $message   = htmlspecialchars($_POST['messageBody'], ENT_QUOTES, 'UTF-8');
+    $headTitle = 'Сообщение отправлено!';
 
-  MessageDao::sendMessage($pdo, $message, $articleId);
-  include ROOT . '/views/articles/moderate/success/success.html.php';
+    MessageDao::sendMessage($pdo, $message, $articleId);
+    include ROOT . '/views/articles/moderate/success/success.html.php';
 }

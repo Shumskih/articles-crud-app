@@ -7,28 +7,30 @@ require_once ROOT . '/dao/ArticleDao.php';
 session_start();
 
 if (isset($_POST['delete'])) {
-  $categoryId = intval($_POST['id']);
+    $categoryId = intval($_POST['id']);
 
-  CategoryDao::deleteCategory($pdo, $categoryId);
-  header('Location: /categories');
+    CategoryDao::deleteCategory($pdo, $categoryId);
+    header('Location: /categories');
 }
 
 if (!isset($_GET['id'])) {
-  $headTitle = 'Категории';
+    $headTitle = 'Категории';
 
-  $categories = CategoryDao::getAllCategories($pdo);
+    $categories = CategoryDao::getAllCategories($pdo);
 
-  include ROOT . '/views/categories/index.html.php';
+    include ROOT . '/views/categories/index.html.php';
 }
 
 if (isset($_GET['id'])) {
-  $categoryId = intval($_GET['id']);
+    $categoryId = intval($_GET['id']);
 
-  $articles = ArticleDao::getArticlesByCategory($pdo, $categoryId);
+    $articles = ArticleDao::getArticlesByCategory($pdo, $categoryId);
 
-  $category = CategoryDao::getCategory($pdo, $categoryId);
+    $category = CategoryDao::getCategory($pdo, $categoryId);
 
-  $categoryName = $category['name'];
+    $categoryName = $category['name'];
 
-  include ROOT . '/views/categories/category.html.php';
+    $headTitle = $categoryName;
+
+    include ROOT . '/views/categories/category.html.php';
 }

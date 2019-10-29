@@ -8,11 +8,11 @@ $headTitle = 'Сообщения от модераторов';
 session_start();
 
 if (isset($_SESSION['loggedIn']) && isset($_SESSION['writer'])) {
-  $email = $_SESSION['email'];
+    $email = $_SESSION['email'];
 
-  $articles = ArticleDao::getReturnedArticles($pdo, $email);
+    $articles = ArticleDao::getReturnedArticles($pdo, $email);
 
-  include ROOT . '/views/messages/messages.html.php';
+    include ROOT . '/views/messages/messages.html.php';
 } else {
-  include ROOT . '/views/denied/index.html.php';
+    include ROOT . '/views/denied/index.html.php';
 }

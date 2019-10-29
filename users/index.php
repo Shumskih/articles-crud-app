@@ -9,51 +9,51 @@ session_start();
 $headTitle = 'Пользователи';
 
 if (isset($_GET['search']) && $_GET['search'] !== '') {
-  $name = $email = htmlspecialchars($_GET['search'], ENT_QUOTES, 'UTF-8');
+    $name = $email = htmlspecialchars($_GET['search'], ENT_QUOTES, 'UTF-8');
 
-  $user = UserDao::searchUserByNameAndEmail($pdo, $name, $email);
+    $user = UserDao::searchUserByNameAndEmail($pdo, $name, $email);
 
-  $roles = RoleDao::getRolesOfUsers($pdo, $user);
+    $roles = RoleDao::getRolesOfUsers($pdo, $user);
 
-  $arrow = 'id';
-  include ROOT . '/views/users/search/result.html.php';
+    $arrow = 'id';
+    include ROOT . '/views/users/search/result.html.php';
 } elseif (isset($_GET['search']) && $_GET['search'] == '') {
-  $message = 'error';
+    $message = 'error';
 }
 
 if (!isset($_SESSION['account_administrator'])) {
-  include ROOT . '/views/denied/index.html.php';
+    include ROOT . '/views/denied/index.html.php';
 } elseif ((!isset($_GET['sort-by']) && !isset($_GET['search'])) or
           (!isset($_GET['sort-by']) && (isset($_GET['search']))
            && $_GET['search'] == '')) {
-  $users = UserDao::getUsers($pdo);
+    $users = UserDao::getUsers($pdo);
 
-  $roles = RoleDao::getRolesOfUsers($pdo, $users);
+    $roles = RoleDao::getRolesOfUsers($pdo, $users);
 
-  $arrow = 'id';
-  include ROOT . '/views/users/users.html.php';
+    $arrow = 'id';
+    include ROOT . '/views/users/users.html.php';
 }
 
 if (isset($_SESSION['account_administrator']) && isset($_GET['sort-by'])
     && !isset($_GET['search'])
     && $_GET['sort-by'] == 'name') {
 
-  $users = UserDao::getUsersSortedByName($pdo);
+    $users = UserDao::getUsersSortedByName($pdo);
 
-  $roles = RoleDao::getRolesOfUsers($pdo, $users);
+    $roles = RoleDao::getRolesOfUsers($pdo, $users);
 
-  $arrow = 'name';
-  include ROOT . '/views/users/users.html.php';
+    $arrow = 'name';
+    include ROOT . '/views/users/users.html.php';
 }
 
 if (isset($_SESSION['account_administrator']) && isset($_GET['sort-by'])
     && !isset($_GET['search'])
     && $_GET['sort-by'] == 'email') {
 
-  $users = UserDao::getUsersSortedByEmail($pdo);
+    $users = UserDao::getUsersSortedByEmail($pdo);
 
-  $roles = RoleDao::getRolesOfUsers($pdo, $users);
+    $roles = RoleDao::getRolesOfUsers($pdo, $users);
 
-  $arrow = 'email';
-  include ROOT . '/views/users/users.html.php';
+    $arrow = 'email';
+    include ROOT . '/views/users/users.html.php';
 }
