@@ -1,4 +1,4 @@
-h1 Article
+Article
 ==========
 [Ссылка на сайт](https://articles.guttatus.ru/)
 ***
